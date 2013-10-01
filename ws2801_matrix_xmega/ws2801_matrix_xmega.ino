@@ -1,5 +1,5 @@
 /**
- * http://pastebin.com/BLqkE7CS <- some guy reported this worked for him for event based SPI
+ * http://pastebin.com/BLqkE7CS <- some guy reported this worked for him for event based SPI (from http://www.avrfreaks.net/index.php?name=PNphpBB2&file=printview&t=124620&start=0)
  */
 
 // Define the matrix configuration.
