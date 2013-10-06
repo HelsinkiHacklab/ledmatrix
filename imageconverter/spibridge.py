@@ -64,6 +64,7 @@ class handler:
         self.send_frame(c)
         # IF there are animation frames, send rest of them too
         #c.rgbim.show()
+        # TODO: account for the time spent transferring the frame
         if c.im.info.has_key('duration'):
             time.sleep(float(c.im.info['duration'])/1000)
         while c.seek():
