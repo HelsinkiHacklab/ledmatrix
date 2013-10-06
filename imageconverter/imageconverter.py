@@ -10,13 +10,13 @@ class imageconverter:
         #self.im.show()
         self.arr = np.copy(np.asarray(self.im))
         # Flip every other row
-        print  "Before:" , repr(self.arr)
+        #print  "Before:" , repr(self.arr)
         for i in range(len(self.arr)):
             if ((i % 2) == 0):
                 # no, too smart for it's own good
                 #self.arr[i] = np.fliplr(self.arr[i])
                 self.arr[i] = self.arr[i][::-1]
-        print  "After:" , repr(self.arr)
+        #print  "After:" , repr(self.arr)
         #self.im = Image.fromarray(self.arr)
         #self.im.show()
         self.bytestream = self.arr.flatten()

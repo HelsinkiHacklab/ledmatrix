@@ -73,13 +73,14 @@ void writeout()
 void setup()
 {
     Serial.begin(115200);
-    Serial.print(F("RDY"));
 
     // WS2801 SPI settings
     SPI.begin();
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
     SPI.setClockDivider(SPI_CLOCK_DIV16); // 1 MHz max, else flicker
+
+    Serial.println(F("BOOTED"));
 }
 
 
@@ -89,23 +90,30 @@ void loop()
     {
         case sidle:
         {
-            // Wati for STX (0x2)
-            while (Serial.available())
+            if (Serial.available())
             {
+                // Wait for STX (0x2)
                 byte tmp = Serial.read();
                 if (tmp == 0x2)
                 {
+                    Serial.println(F("START"));
                     state = start_seen;
                     bufferpos = 0;
                     break;
                 }
+                else
+                {
+                    Serial.write(0x15);
+                }
             }
+            Serial.println(F("IDLE"));
+            delay(10);
             
         }
             break;
         case start_seen:
         {
-            while (Serial.available())
+            if (Serial.available())
             {
                 byte tmp = Serial.read();
                 // ETX
@@ -127,21 +135,29 @@ void loop()
                     {
                         // Copy the hex as byte to SPI buffer
                         buffer[bufferpos] = ardubus_hex2byte(srlbuffer[0], srlbuffer[1]);
-                        bufferpos++;
+                        Serial.print(buffer[bufferpos], DEC);
                         Serial.write(0x6);
+                        bufferpos++;
                         // Clear the Serial working buffer
                         memset(srlbuffer, 0x0, 4);
                         srlbufferpos = 0;
                     }
                 }
             }
+            else
+            {
+                Serial.println(F("WDATA"));
+                delay(1);
+            }
         }
             break;
         case stop_seen:
         {
+            Serial.println(F("WRITING"));
             writeout();
             bufferpos = 0;
             state = sidle;
+            Serial.println("DONE");
         }
             break;
     }
