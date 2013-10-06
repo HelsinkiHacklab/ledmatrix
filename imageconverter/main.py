@@ -11,16 +11,24 @@ class handler:
         self.receiver_thread = threading.Thread(target=self.serial_reader)
         self.receiver_thread.setDaemon(1)
         self.receiver_thread.start()
+        self.ack = False
+        self.nack = False
 
     def serial_reader(self):
         while True:
             if not self.port.inWaiting():
                 # Don't try to read if there is no data, instead sleep (yield) a bit
-                time.sleep(0.01)
+                time.sleep(0.001)
                 continue
             data = self.port.read(1)
             if len(data) == 0:
                 continue
+            if data == chr(0x6):
+                print "ACK"
+                self.ack = True
+            if data == chr(0x15):
+                print "NACK"
+                self.nack = True
             if data not in "\r\n":
                 sys.stdout.write(repr(data))
         #        sys.stdout.write(" 0x".join(binascii.hexlify(data)))
@@ -30,17 +38,31 @@ class handler:
             else:
                 sys.stdout.write(data)
 
+    def send_and_wait(self, encoded):
+        self.ack = False
+        self.nack = False
+        self.port.write(encoded)
+        while(True):
+            time.sleep(0.001)
+            if self.ack:
+                return
+            if self.nack:
+                return self.send_and_wait(byte)
+            print "WAITING"
+        
+            
+
     def send(self, img):
         c = imageconverter(img)
-        self.port.write(chr(0x2))
+        self.send_and_wait(chr(0x2))
         #print "STX",
         for byte in c.bytestream:
             encoded = chr(byte).encode('hex')
-            self.port.write(encoded)
+            self.send_and_wait(encoded)
             #print encoded,
-        self.port.write(chr(0x3))
+        self.send_and_wait(chr(0x3))
         #print "ETX"
-        time.sleep(5)
+        time.sleep(2)
 
 if __name__ == '__main__':
     from imageconverter import imageconverter

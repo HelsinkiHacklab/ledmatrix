@@ -99,6 +99,7 @@ void loop()
                     Serial.println(F("START"));
                     state = start_seen;
                     bufferpos = 0;
+                    Serial.write(0x6);
                     break;
                 }
                 else
@@ -120,6 +121,7 @@ void loop()
                 if (tmp == 0x3)
                 {
                     state = stop_seen;
+                    Serial.write(0x6);
                     break;
                 }
                 if (!is_hex_char(tmp))
@@ -131,12 +133,12 @@ void loop()
                 {
                     srlbuffer[srlbufferpos] = tmp;
                     srlbufferpos++;
+                    Serial.write(0x6);
                     if (strlen(srlbuffer) == 2)
                     {
                         // Copy the hex as byte to SPI buffer
                         buffer[bufferpos] = ardubus_hex2byte(srlbuffer[0], srlbuffer[1]);
                         Serial.print(buffer[bufferpos], DEC);
-                        Serial.write(0x6);
                         bufferpos++;
                         // Clear the Serial working buffer
                         memset(srlbuffer, 0x0, 4);
