@@ -3,12 +3,16 @@ import sys,os
 from PIL import Image, ImageOps
 import numpy as np
 
+MATRIX_W = 31
+MATRIX_H = 7
+
+
 
 class imageconverter:
     frame_count = 0
 
     def __init__(self, imagedata):
-        self.im = Image.open(imagedata).convert('RGB')
+        self.im = Image.open(imagedata)
         self.frame_count = 0
         self.count_frames()
         self.calc_bytestream()
@@ -37,9 +41,10 @@ class imageconverter:
         return False
 
     def calc_bytestream(self):
-        #self.im_31x7 = ImageOps.fit(self.im, (31,7), Image.ANTIALIAS)
-        self.arr1 = np.asarray(self.im)
-        self.arr2 = np.ndarray(shape=(7,31,3), dtype=np.uint8)
+        self.rgbim = self.im.convert('RGB')
+        #self.rgbim_MATRIX_WxMATRIX_H = ImageOps.fit(self.im, (MATRIX_W,MATRIX_H), Image.ANTIALIAS)
+        self.arr1 = np.asarray(self.rgbim)
+        self.arr2 = np.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=np.uint8)
         # Flip every other row
         #print  "Before:" , repr(self.arr1)
         for i in range(len(self.arr1)):
