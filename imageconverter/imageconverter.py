@@ -1,13 +1,43 @@
 #!/usr/bin/env python
 import sys,os
-from PIL import Image
+from PIL import Image, ImageOps
 import numpy as np
 
 
 class imageconverter:
+    frame_count = 0
+
     def __init__(self, imagedata):
         self.im = Image.open(imagedata).convert('RGB')
-        #self.im.show()
+        self.frame_count = 0
+        self.count_frames()
+        self.calc_bytestream()
+
+    def count_frames(self):
+        try:
+            while(True):
+                self.frame_count = self.im.tell()
+                self.im.seek(self.frame_count+1)
+        except EOFError,e:
+            pass
+        self.im.seek(0)
+
+    @property
+    def current_frame(self):
+        return self.im.tell()
+
+    def seek(self, frame=None):
+        """Seeks to next frame (or given frame but that is not always possible)"""
+        if frame == None:
+            if self.current_frame < self.frame_count:
+                frame = self.current_frame+1
+        self.im.seek(frame)
+        if self.current_frame < self.frame_count:
+            return True
+        return False
+
+    def calc_bytestream(self):
+        #self.im_31x7 = ImageOps.fit(self.im, (31,7), Image.ANTIALIAS)
         self.arr1 = np.asarray(self.im)
         self.arr2 = np.ndarray(shape=(7,31,3), dtype=np.uint8)
         # Flip every other row
@@ -21,6 +51,8 @@ class imageconverter:
         #self.im = Image.fromarray(self.arr2)
         #self.im.show()
         self.bytestream = self.arr2.flatten()
+
+    
 
 # Another small bit of boilerplate
 if __name__ == '__main__':
