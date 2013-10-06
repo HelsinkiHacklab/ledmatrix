@@ -24,10 +24,10 @@ class handler:
             if len(data) == 0:
                 continue
             if data == chr(0x6):
-                print "ACK"
+                #print "ACK"
                 self.ack = True
             if data == chr(0x15):
-                print "NACK"
+                #print "NACK"
                 self.nack = True
             if data not in "\r\n":
                 sys.stdout.write(repr(data))
@@ -48,7 +48,7 @@ class handler:
                 return
             if self.nack:
                 return self.send_and_wait(byte)
-            print "WAITING"
+            #print "WAITING"
         
             
 
@@ -61,8 +61,8 @@ class handler:
             self.send_and_wait(encoded)
             #print encoded,
         self.send_and_wait(chr(0x3))
+        time.sleep(1)
         #print "ETX"
-        time.sleep(2)
 
 if __name__ == '__main__':
     from imageconverter import imageconverter

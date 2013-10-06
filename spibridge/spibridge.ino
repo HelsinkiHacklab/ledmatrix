@@ -96,7 +96,11 @@ void loop()
                 byte tmp = Serial.read();
                 if (tmp == 0x2)
                 {
+#ifdef PRINT_DEBUG
                     Serial.println(F("START"));
+#endif
+                    // Clear the data array
+                    memset(srlbuffer, 0x0, numbytes);
                     state = start_seen;
                     bufferpos = 0;
                     Serial.write(0x6);
@@ -107,9 +111,10 @@ void loop()
                     Serial.write(0x15);
                 }
             }
+#ifdef PRINT_DEBUG
             Serial.println(F("IDLE"));
             delay(10);
-            
+#endif            
         }
             break;
         case start_seen:
@@ -138,7 +143,9 @@ void loop()
                     {
                         // Copy the hex as byte to SPI buffer
                         buffer[bufferpos] = ardubus_hex2byte(srlbuffer[0], srlbuffer[1]);
+#ifdef PRINT_DEBUG
                         Serial.print(buffer[bufferpos], DEC);
+#endif
                         bufferpos++;
                         // Clear the Serial working buffer
                         memset(srlbuffer, 0x0, 4);
@@ -148,8 +155,10 @@ void loop()
             }
             else
             {
+#ifdef PRINT_DEBUG
                 Serial.println(F("WDATA"));
                 delay(1);
+#endif
             }
         }
             break;
