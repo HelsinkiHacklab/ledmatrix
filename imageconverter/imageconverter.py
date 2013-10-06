@@ -16,6 +16,7 @@ class imageconverter:
                 # no, too smart for it's own good
                 #self.arr[i] = np.fliplr(self.arr[i])
                 self.arr[i] = self.arr[i][::-1]
+                pass
         #print  "After:" , repr(self.arr)
         #self.im = Image.fromarray(self.arr)
         #self.im.show()
@@ -26,5 +27,7 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print "usage ./imageconverter.py imagefile"
     c = imageconverter(sys.argv[1])
+    im = Image.fromarray(c.arr)
+    im.show()
     
     
