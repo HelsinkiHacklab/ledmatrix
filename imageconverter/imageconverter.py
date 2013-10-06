@@ -42,7 +42,9 @@ class imageconverter:
 
     def calc_bytestream(self):
         self.rgbim = self.im.convert('RGB')
-        #self.rgbim_MATRIX_WxMATRIX_H = ImageOps.fit(self.im, (MATRIX_W,MATRIX_H), Image.ANTIALIAS)
+        if (   self.rgbim.size[0] > MATRIX_W
+            or self.rgbim.size[1] > MATRIX_H):
+            self.rgbim = ImageOps.fit(self.rgbim, (MATRIX_W,MATRIX_H), Image.ANTIALIAS)
         self.arr1 = np.asarray(self.rgbim)
         self.arr2 = np.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=np.uint8)
         # Flip every other row
