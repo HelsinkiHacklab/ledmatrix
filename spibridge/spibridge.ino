@@ -1,9 +1,11 @@
 #include "SPI.h"
 const uint16_t numleds = 7 * 31;
 const uint16_t numbytes = numleds * 3;
-uint8_t buffer[numbytes];
+char buffer[numbytes];
 uint16_t bufferpos;
-uint8_t srlbuffer[4];
+char srlbuffer[4];
+char srlbufferpos;
+
 
 enum parser_states {
     sidle,
@@ -87,6 +89,59 @@ void loop()
     {
         case sidle:
         {
+            // Wati for STX (0x2)
+            while (Serial.available())
+            {
+                byte tmp = Serial.read();
+                if (tmp == 0x2)
+                {
+                    state = start_seen;
+                    bufferpos = 0;
+                    break;
+                }
+            }
+            
+        }
+            break;
+        case start_seen:
+        {
+            while (Serial.available())
+            {
+                byte tmp = Serial.read();
+                // ETX
+                if (tmp == 0x3)
+                {
+                    state = stop_seen;
+                    break;
+                }
+                if (!is_hex_char(tmp))
+                {
+                    // Error, what to do ??
+                    Serial.write(0x15);
+                }
+                else
+                {
+                    srlbuffer[srlbufferpos] = tmp;
+                    srlbufferpos++;
+                    if (strlen(srlbuffer) == 2)
+                    {
+                        // Copy the hex as byte to SPI buffer
+                        buffer[bufferpos] = ardubus_hex2byte(srlbuffer[0], srlbuffer[1]);
+                        bufferpos++;
+                        Serial.write(0x6);
+                        // Clear the Serial working buffer
+                        memset(srlbuffer, 0x0, 4);
+                        srlbufferpos = 0;
+                    }
+                }
+            }
+        }
+            break;
+        case stop_seen:
+        {
+            writeout();
+            bufferpos = 0;
+            state = sidle;
         }
             break;
     }
