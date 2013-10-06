@@ -38,6 +38,7 @@ class imageconverter:
             else:
                 return False
         self.im.seek(frame)
+        self.calc_bytestream()
         if self.current_frame < self.frame_count:
             return True
         return False

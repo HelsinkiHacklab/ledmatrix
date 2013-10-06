@@ -65,11 +65,11 @@ class handler:
         # IF there are animation frames, send rest of them too
         #c.rgbim.show()
         if c.im.info.has_key('duration'):
-            time.sleep(float(c.im.info['duration'])/100)
+            time.sleep(float(c.im.info['duration'])/1000)
         while c.seek():
             self.send_frame(c)
             #c.rgbim.show()
-            time.sleep(float(c.im.info['duration'])/100)
+            time.sleep(float(c.im.info['duration'])/1000)
 
         time.sleep(1)
         #print "ETX"
