@@ -8,26 +8,26 @@ class imageconverter:
     def __init__(self, imagedata):
         self.im = Image.open(imagedata).convert('RGB')
         #self.im.show()
-        self.arr = np.copy(np.asarray(self.im))
+        self.arr1 = np.asarray(self.im)
+        self.arr2 = np.ndarray(shape=(7,31,3), dtype=np.uint8)
         # Flip every other row
-        #print  "Before:" , repr(self.arr)
-        for i in range(len(self.arr)):
+        print  "Before:" , repr(self.arr1)
+        for i in range(len(self.arr1)):
             if ((i % 2) == 0):
-                # no, too smart for it's own good
-                #self.arr[i] = np.fliplr(self.arr[i])
-                self.arr[i] = self.arr[i][::-1]
-                pass
-        #print  "After:" , repr(self.arr)
-        #self.im = Image.fromarray(self.arr)
+                self.arr2[i] = self.arr1[i][::-1]
+            else:
+                self.arr2[i] = self.arr1[i]
+        print  "After:" , repr(self.arr2)
+        #self.im = Image.fromarray(self.arr2)
         #self.im.show()
-        self.bytestream = self.arr.flatten()
+        self.bytestream = self.arr2.flatten()
 
 # Another small bit of boilerplate
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print "usage ./imageconverter.py imagefile"
     c = imageconverter(sys.argv[1])
-    im = Image.fromarray(c.arr)
+    im = Image.fromarray(c.arr2)
     im.show()
     
     
