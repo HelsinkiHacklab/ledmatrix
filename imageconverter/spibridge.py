@@ -49,11 +49,8 @@ class handler:
             if self.nack:
                 return self.send_and_wait(byte)
             #print "WAITING"
-        
-            
 
-    def send(self, img):
-        c = imageconverter(img)
+    def send_frame(self, c):
         self.send_and_wait(chr(0x2))
         #print "STX",
         for byte in c.bytestream:
@@ -61,6 +58,19 @@ class handler:
             self.send_and_wait(encoded)
             #print encoded,
         self.send_and_wait(chr(0x3))
+
+    def send(self, img):
+        c = imageconverter(img)
+        self.send_frame(c)
+        # IF there are animation frames, send rest of them too
+        #c.rgbim.show()
+        if c.im.info.has_key('duration'):
+            time.sleep(float(c.im.info['duration'])/100)
+        while c.seek():
+            self.send_frame(c)
+            #c.rgbim.show()
+            time.sleep(float(c.im.info['duration'])/100)
+
         time.sleep(1)
         #print "ETX"
 

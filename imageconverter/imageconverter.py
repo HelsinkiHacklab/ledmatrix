@@ -35,6 +35,8 @@ class imageconverter:
         if frame == None:
             if self.current_frame < self.frame_count:
                 frame = self.current_frame+1
+            else:
+                return False
         self.im.seek(frame)
         if self.current_frame < self.frame_count:
             return True
