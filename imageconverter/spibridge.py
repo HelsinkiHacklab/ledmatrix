@@ -18,7 +18,7 @@ class handler:
         while True:
             if not self.port.inWaiting():
                 # Don't try to read if there is no data, instead sleep (yield) a bit
-                time.sleep(0.001)
+                time.sleep(0)
                 continue
             data = self.port.read(1)
             if len(data) == 0:
@@ -43,7 +43,7 @@ class handler:
         self.nack = False
         self.port.write(encoded)
         while(True):
-            time.sleep(0.001)
+            time.sleep(0)
             if self.ack:
                 return
             if self.nack:
