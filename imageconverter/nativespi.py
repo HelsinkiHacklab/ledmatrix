@@ -32,9 +32,6 @@ class handler:
             #c.rgbim.show()
             time.sleep(float(c.im.info['duration'])/1000)
 
-        time.sleep(1)
-        #print "ETX"
-
 if __name__ == '__main__':
     from imageconverter import imageconverter
     if len(sys.argv) < 2:
