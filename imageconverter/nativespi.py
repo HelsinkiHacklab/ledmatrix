@@ -5,19 +5,19 @@ SPI_DEV = '/dev/spidev4.0'
 SPEED = 1000000
 
 class handler:
-    def __init__(self, port):
+    def __init__(self):
         self.dev = SPIDev(SPI_DEV)
+        self.databuffer = None
+        self.spitransfer = None
 
     def send_frame(self, c):
-        transfer, buf, _ = spi_transfer(c.bytestream, readlen=0, speed=SPEED)
-    
-        self.send_and_wait(chr(0x2))
-        #print "STX",
-        for byte in c.bytestream:
-            encoded = chr(byte).encode('hex')
-            self.send_and_wait(encoded)
-            #print encoded,
-        self.send_and_wait(chr(0x3))
+        # Initialize the buffer once (after we have the first set of image data)
+        if (   not self.databuffer
+            or not self.spitransfer):
+            self.transfer, self.databuffer, _ = spi_transfer(c.bytestream, readlen=0, speed=SPEED)
+        else:
+            self.databuffer = c.bytestream
+        self.dev.do_transfers(self.transfer)
 
     def send(self, img):
         c = imageconverter(img)
@@ -40,19 +40,4 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print "usage ./main.py imagefile"
 
-    import ConfigParser, os, sys, serial
-    config = ConfigParser.SafeConfigParser()
-    if not os.path.isfile('spi.ini'):
-        config.add_section('modem')
-        config.set('modem', 'port', '/dev/whatever')
-        with open('spi.ini', 'wb') as configfile:
-            config.write(configfile)
-        print "Edit spi.ini for your modem port"
-        sys.exit(1)
-    config.read('spi.ini')
-    port = serial.Serial(config.get('modem', 'port'), 115200)
-    h = handler(port)
-    time.sleep(2)
     h.send(sys.argv[1])
-
-root@beaglebian2g:/opt/ledmatrix# 
