@@ -11,13 +11,13 @@ class handler:
         self.spitransfer = None
 
     def send_frame(self, c):
+        bytestring = ''.join(c.bytestream)
         # Initialize the buffer once (after we have the first set of image data)
         if (   not self.databuffer
             or not self.spitransfer):
-            self.transfer, self.databuffer, _ = spi_transfer(c.bytestream, readlen=0, speedhz=SPEED)
-        else:
-            self.databuffer = c.bytestream
-        self.dev.do_transfers(self.transfer)
+            self.transfer, self.databuffer, _ = spi_transfer(bytestring, readlen=0, speedhz=SPEED)
+        self.databuffer = bytestring
+        self.dev.do_transfers([self.transfer])
 
     def send(self, img):
         c = imageconverter(img)
