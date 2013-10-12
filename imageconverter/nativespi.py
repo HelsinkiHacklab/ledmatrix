@@ -6,6 +6,7 @@ SPEED = 1000000
 
 class handler:
     def __init__(self):
+        # This fails on the BeagleBoard at least, gets an exception from ioctl(self._no, param, ctypes.addressof(value)) implying something does not fit in something
         self.dev = SPIDev(SPI_DEV)
         self.databuffer = None
         self.spitransfer = None
