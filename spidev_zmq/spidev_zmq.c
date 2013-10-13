@@ -271,16 +271,21 @@ int main(int argc, char *argv[])
     {
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
-        int size = zmq_msg_recv(&recv_msg, zmq_responder, 0);
+        int size = zmq_msg_recv(&recv_msg, zmq_responder, ZMQ_DONTWAIT);
         if (size == -1)
         {
             // Error when receiving
             zmq_msg_close(&recv_msg);
-            //dummy_reply(zmq_responder);
+            if (zmq_errno() == EAGAIN)
+            {
+                continue;
+            }
+            perror("Error from zmq_msg_recv");
             continue;
         }
         if (size == 0)
         {
+            printf("Empty message received, replying in kind\n");
             // No data, send dummy reply
             zmq_msg_close(&recv_msg);
             dummy_reply(zmq_responder);
@@ -293,6 +298,7 @@ int main(int argc, char *argv[])
         if (txarr == NULL)
         {
             // Could not allocate memory
+            perror("Could not allocate memory for SPI transmit buffer");
             zmq_msg_close(&recv_msg);
             dummy_reply(zmq_responder);
             continue;
@@ -301,6 +307,7 @@ int main(int argc, char *argv[])
         if (rxarr == NULL)
         {
             // Could not allocate memory
+            perror("Could not allocate memory for SPI receive buffer");
             zmq_msg_close(&recv_msg);
             dummy_reply(zmq_responder);
             continue;
@@ -325,8 +332,9 @@ int main(int argc, char *argv[])
         free(txarr);
         free(rxarr);
 
+        // Check for interrup codes
         if (s_interrupted) {
-            printf ("W: interrupt received, killing server...\n");
+            printf("W: interrupt received, killing server...\n");
             break;
         }
     }
