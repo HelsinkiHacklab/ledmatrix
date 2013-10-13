@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h> /* memcpy */
 
 // ZMQ includes
 #include <zmq.h>
