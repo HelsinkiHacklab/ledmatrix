@@ -318,14 +318,14 @@ int main(int argc, char *argv[])
             dummy_reply(zmq_responder);
             continue;
         }
-        printf("Copying message to txarr (%d bytes)", size);
+        printf("Copying message to txarr (%d bytes)\n", size);
         memcpy(txarr, zmq_msg_data(&recv_msg), size);
-        printf("Marking message closed");
+        printf("Marking message closed\n");
         zmq_msg_close(&recv_msg);
         // We cannot rely on ARRAY_SIZE when dealing with dynamically allocated arrays
-        printf("About to send %d bytes over SPI", size);
+        printf("About to send %d bytes over SPI\n", size);
         transfer_ret = spi_transfer(spidev_fd, txarr, rxarr, size);
-        printf("spi_transfer returned %d", transfer_ret);
+        printf("spi_transfer returned %d\n", transfer_ret);
         if (transfer_ret < 1)
         {
             // Error when transferring, send a dummy reply
@@ -335,23 +335,23 @@ int main(int argc, char *argv[])
             continue;
         }
         zmq_msg_t send_msg;
-        printf("Creating reply message of %d bytes", size);
+        printf("Creating reply message of %d bytes\n", size);
         zmq_msg_init_size(&send_msg, size);
-        printf("Copying rxarr to message");
+        printf("Copying rxarr to message\n");
         memcpy(zmq_msg_data(&send_msg), rxarr, size);
-        printf("Sending message");
+        printf("Sending message\n");
         zmq_msg_send(&send_msg, zmq_responder, 0);
-        printf("Marking message closed");
+        printf("Marking message closed\n");
         zmq_msg_close(&send_msg);
-        printf("Freeing rxarr and txarr");
+        printf("Freeing rxarr and txarr\n");
         free(txarr);
         free(rxarr);
 
     }
-    printf("Closing ZMQ contexts");
+    printf("Closing ZMQ contexts\n");
     zmq_close(zmq_responder);
     zmq_ctx_destroy(zmq_context);
-    printf("Closing the SPI device");
+    printf("Closing the SPI device\n");
     close(spidev_fd);
 
     return 0;
