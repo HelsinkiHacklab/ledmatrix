@@ -1,25 +1,19 @@
 #!/usr/bin/python
 import sys,os,time
-from spi import spi_transfer, SPIDev
-SPI_DEV = '/dev/spidev4.0'
-SPEED = 1000000
+import zmq
 
 class handler:
-    def __init__(self):
-        # This fails on the BeagleBoard at least, gets an exception from ioctl(self._no, param, ctypes.addressof(value)) implying something does not fit in something
-        self.dev = SPIDev(SPI_DEV)
-        self.databuffer = None
-        self.spitransfer = None
+    def __init__(self, zmq_socket):
+        self.context = zmq.Context()
+        self.socket = self.context.socket(zmq.REQ)
+        self.socket.bind(zmq_socket)
 
     def send_frame(self, c):
         bytestring = ''.join(c.bytestream)
-        # Initialize the buffer once (after we have the first set of image data)
-        if (   not self.databuffer
-            or not self.spitransfer):
-            self.transfer, self.databuffer, _ = spi_transfer(bytestring, readlen=0, speedhz=SPEED)
-        self.databuffer = bytestring
-        self.dev.do_transfers([self.transfer])
-
+        self.socket.send(bytestring)
+        # We must read the reply even if we do not expect to use it
+        dummy = socket.recv()
+    
     def send(self, img):
         c = imageconverter(img)
         self.send_frame(c)
@@ -35,7 +29,7 @@ class handler:
 
 if __name__ == '__main__':
     from imageconverter import imageconverter
-    if len(sys.argv) < 2:
-        print "usage ./main.py imagefile"
-
+    if len(sys.argv) < 3:
+        print "usage ./zmqspi.py imagefile tcp://whatever:6969"
+    h = handler(sys.argv[2])
     h.send(sys.argv[1])
