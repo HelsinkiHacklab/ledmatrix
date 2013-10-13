@@ -6,14 +6,14 @@ class handler:
     def __init__(self, zmq_socket):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REQ)
-        self.socket.bind(zmq_socket)
+        self.socket.connect(zmq_socket)
 
     def send_frame(self, c):
         bytestring = ''.join(c.bytestream)
         self.socket.send(bytestring)
         # We must read the reply even if we do not expect to use it
         dummy = socket.recv()
-    
+
     def send(self, img):
         c = imageconverter(img)
         self.send_frame(c)
