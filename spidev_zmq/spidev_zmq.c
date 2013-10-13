@@ -85,7 +85,7 @@ static void print_usage(const char *prog)
          "  -3 --3wire    SI/SO signals shared\n"
          "  -N --no-cs    set SPI_NO_CS\n"
          "  -R --ready    set SPI_READY\n"
-         "  -S --zmq_responder   ZMQ socket definition (default tpc://*:6969)\n"
+         "  -S --socket   ZMQ socket definition (default tpc://*:6969)\n"
     );
     exit(1);
 }
@@ -106,7 +106,7 @@ static void parse_opts(int argc, char *argv[])
             { "3wire",   0, 0, '3' },
             { "no-cs",   0, 0, 'N' },
             { "ready",   0, 0, 'R' },
-            { "zmq_responder",  0, 0, 'S' },
+            { "socket",  0, 0, 'S' },
             { NULL, 0, 0, 0 },
         };
         int c;
@@ -118,10 +118,16 @@ static void parse_opts(int argc, char *argv[])
 
         switch (c) {
         case 'D':
-            device = optarg;
+        {
+            char* new_device = strdup(optarg);
+            device = new_device;
+        }
             break;
         case 'S':
-            zmq_connect_str = optarg;
+        {
+            char* new_zmq_connect_str = strdup(optarg);
+            zmq_connect_str = new_zmq_connect_str;
+        }
             break;
         case 's':
             speed = atoi(optarg);
