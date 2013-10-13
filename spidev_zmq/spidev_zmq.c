@@ -69,7 +69,7 @@ static uint8_t bits = 8;
 static uint32_t speed = 500000;
 static uint16_t delay;
 // ZMQ cofig
-static const char *zmq_connect_str = "tpc://*:6969";
+static const char *zmq_connect_str = "tcp://*:6969";
 
 static void print_usage(const char *prog)
 {
