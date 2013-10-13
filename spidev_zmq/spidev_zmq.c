@@ -63,7 +63,7 @@ static void pabort(const char *s)
 }
 
 // The SPI configs
-static const char *device = "/dev/spidev1.1";
+static const char *device = "/dev/spidev3.0";
 static uint8_t mode;
 static uint8_t bits = 8;
 static uint32_t speed = 500000;
@@ -74,7 +74,7 @@ static const char *zmq_connect_str = "tpc://*:6969";
 static void print_usage(const char *prog)
 {
     printf("Usage: %s [-DsbdlHOLC3NRS]\n", prog);
-    puts("  -D --device   device to use (default /dev/spidev1.1)\n"
+    puts("  -D --device   device to use (default /dev/spidev3.0)\n"
          "  -s --speed    max speed (Hz)\n"
          "  -d --delay    delay (usec)\n"
          "  -b --bpw      bits per word \n"
@@ -86,7 +86,7 @@ static void print_usage(const char *prog)
          "  -3 --3wire    SI/SO signals shared\n"
          "  -N --no-cs    set SPI_NO_CS\n"
          "  -R --ready    set SPI_READY\n"
-         "  -S --zmq_responder   ZMQ zmq_responder definition\n"
+         "  -S --zmq_responder   ZMQ socket definition (default tpc://*:6969)\n"
     );
     exit(1);
 }
