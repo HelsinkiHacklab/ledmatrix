@@ -163,14 +163,14 @@ static void parse_opts(int argc, char *argv[])
     }
 }
 
-static int spi_transfer(int fd, uint8_t tx[], uint8_t rx[])
+static int spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int bytes)
 {
     int ret;
 
     struct spi_ioc_transfer tr = {
         .tx_buf = (unsigned long)tx,
         .rx_buf = (unsigned long)rx,
-        .len = ARRAY_SIZE(tx),
+        .len = bytes,
         .delay_usecs = delay,
         .speed_hz = speed,
         .bits_per_word = bits,
@@ -184,7 +184,8 @@ static int spi_transfer(int fd, uint8_t tx[], uint8_t rx[])
     }
 
     /*
-    for (ret = 0; ret < ARRAY_SIZE(tx); ret++) {
+    // We cannot rely on ARRAY_SIZE when dealing with dynamically allocated arrays
+    for (ret = 0; ret < bytes; ret++) {
         if (!(ret % 6))
             puts("");
         printf("%.2X ", rx[ret]);
@@ -274,11 +275,14 @@ int main(int argc, char *argv[])
             zmq_msg_close(&send_msg);
         }
         
+        // TODO: Check for failed malloc
+        // This is equivalent to: uint8_t *arr; arr = malloc(...);
         uint8_t *txarr = malloc(size);
         uint8_t *rxarr = malloc(size);
         memcpy(txarr, zmq_msg_data(&recv_msg), size);
         zmq_msg_close(&recv_msg);
-        transfer_ret = spi_transfer(spidev_fd, txarr, rxarr);
+        // We cannot rely on ARRAY_SIZE when dealing with dynamically allocated arrays
+        transfer_ret = spi_transfer(spidev_fd, txarr, rxarr, size);
         if (transfer_ret < 1)
         {
             free(txarr);
