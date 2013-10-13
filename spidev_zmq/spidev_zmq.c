@@ -306,13 +306,11 @@ int main(int argc, char *argv[])
         transfer_ret = spi_transfer(spidev_fd, txarr, rxarr, size);
         if (transfer_ret < 1)
         {
+            // Error when transferring, send a dummy reply
             free(txarr);
             free(rxarr);
-            // Error when transferring, send a dummy reply
-            zmq_msg_t send_msg;
-            zmq_msg_init_size(&send_msg, 0);
-            zmq_msg_send(&send_msg, socket, 0);
-            zmq_msg_close(&send_msg);
+            dummy_reply(socket);
+            continue;
         }
         zmq_msg_t send_msg;
         zmq_msg_init_size(&send_msg, size);
