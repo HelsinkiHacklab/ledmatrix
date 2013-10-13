@@ -269,6 +269,12 @@ int main(int argc, char *argv[])
     int transfer_ret;
     while (1)
     {
+        // Check for interrup codes
+        if (s_interrupted) {
+            printf("W: interrupt received, killing server...\n");
+            break;
+        }
+
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
         int size = zmq_msg_recv(&recv_msg, zmq_responder, ZMQ_DONTWAIT);
@@ -332,11 +338,6 @@ int main(int argc, char *argv[])
         free(txarr);
         free(rxarr);
 
-        // Check for interrup codes
-        if (s_interrupted) {
-            printf("W: interrupt received, killing server...\n");
-            break;
-        }
     }
     zmq_close(zmq_responder);
     zmq_ctx_destroy(zmq_context);
