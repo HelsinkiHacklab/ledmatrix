@@ -197,6 +197,13 @@ static int spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int bytes)
     return ret;
 }
 
+void dummy_reply(void *socket)
+{
+    zmq_msg_t send_msg;
+    zmq_msg_init_size(&send_msg, 0);
+    zmq_msg_send(&send_msg, socket, 0);
+    zmq_msg_close(&send_msg);
+}
 
 int main(int argc, char *argv[])
 {
@@ -264,22 +271,35 @@ int main(int argc, char *argv[])
         {
             // Error when receiving
             zmq_msg_close(&recv_msg);
+            //dummy_reply(socket);
             continue;
         }
         if (size == 0)
         {
             // No data, send dummy reply
             zmq_msg_close(&recv_msg);
-            zmq_msg_t send_msg;
-            zmq_msg_init_size(&send_msg, 0);
-            zmq_msg_send(&send_msg, socket, 0);
-            zmq_msg_close(&send_msg);
+            dummy_reply(socket);
+            continue;
         }
         
         // TODO: Check for failed malloc
         // This is equivalent to: uint8_t *arr; arr = malloc(...);
         uint8_t *txarr = malloc(size);
+        if (txarr == NULL)
+        {
+            // Could not allocate memory
+            zmq_msg_close(&recv_msg);
+            dummy_reply(socket);
+            continue;
+        }
         uint8_t *rxarr = malloc(size);
+        if (rxarr == NULL)
+        {
+            // Could not allocate memory
+            zmq_msg_close(&recv_msg);
+            dummy_reply(socket);
+            continue;
+        }
         memcpy(txarr, zmq_msg_data(&recv_msg), size);
         zmq_msg_close(&recv_msg);
         // We cannot rely on ARRAY_SIZE when dealing with dynamically allocated arrays
