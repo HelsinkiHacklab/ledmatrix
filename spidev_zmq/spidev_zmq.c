@@ -297,7 +297,7 @@ int main(int argc, char *argv[])
             continue;
         }
         
-        printf("Allocating txarr (%d bytes)", size);
+        printf("Allocating txarr (%d bytes)\n", size);
         // This is equivalent to: uint8_t *arr; arr = malloc(...);
         uint8_t *txarr = malloc(size);
         if (txarr == NULL)
@@ -308,7 +308,7 @@ int main(int argc, char *argv[])
             dummy_reply(zmq_responder);
             continue;
         }
-        printf("Allocating rxarr (%d bytes)", size);
+        printf("Allocating rxarr (%d bytes)\n", size);
         uint8_t *rxarr = malloc(size);
         if (rxarr == NULL)
         {
