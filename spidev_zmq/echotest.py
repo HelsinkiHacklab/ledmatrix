@@ -11,7 +11,7 @@ if __name__ == '__main__':
     socket = context.socket(zmq.REQ)
     socket.connect(sys.argv[1])
     
-    socket.send(data)
+    socket.send(''.join(data))
     print "Sent %s" % repr(data)
     rpl = socket.recv()
     print "Got reply %s" % repr(rpl)
