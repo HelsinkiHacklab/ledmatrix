@@ -281,6 +281,8 @@ int main(int argc, char *argv[])
         transfer_ret = spi_transfer(spidev_fd, txarr, rxarr);
         if (transfer_ret < 1)
         {
+            free(txarr);
+            free(rxarr);
             // Error when transferring, send a dummy reply
             zmq_msg_t send_msg;
             zmq_msg_init_size(&send_msg, 0);
@@ -292,6 +294,8 @@ int main(int argc, char *argv[])
         memcpy(zmq_msg_data(&send_msg), rxarr, size);
         zmq_msg_send(&send_msg, socket, 0);
         zmq_msg_close(&send_msg);
+        free(txarr);
+        free(rxarr);
 
         if (s_interrupted) {
             printf ("W: interrupt received, killing server...\n");
