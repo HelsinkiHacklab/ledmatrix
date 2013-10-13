@@ -8,7 +8,7 @@
  * NOTE: ZMQ 3.2 API! 
  * On debian this is in unstable see http://serverfault.com/questions/22414/how-can-i-run-debian-stable-but-install-some-packages-from-testing#answer-382101
  *   for a good way to maintain mixed system, then apt-get install libzmq3-dev
- *
+ * You will also need a bunch of other libraries, uuid-dev is the one that likely is not already installed.
  */
 
 // Standard includes
