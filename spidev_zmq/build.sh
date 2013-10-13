@@ -7,8 +7,11 @@
 test -z "$BOOM_MODEL" && BOOM_MODEL=debug
 
 ZMQOPTS='-lzmq -lczmq'
-if pkg-config libzmq --exists; then
+if pkg-config libczmq --exists; then
   ZMQOPTS=$(pkg-config --libs --cflags libczmq)
+fi
+if pkg-config libzmq --exists; then
+  ZMQOPTS=$(pkg-config --libs --cflags libzmq)
 fi
 if [ /$1/ = /all/ ]; then
     echo "Building C examples..."
@@ -24,7 +27,7 @@ elif [ /$1/ = /clean/ ]; then
     done
 elif [ -f $1.c ]; then
     echo "$1"
-    ./c -l $ZMQOPTS -q $1
+    ./c -l $ZMQOPTS -v $1
 else
     echo "syntax: build all | clean"
 fi
