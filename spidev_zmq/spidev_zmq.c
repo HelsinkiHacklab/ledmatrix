@@ -69,7 +69,7 @@ static uint8_t bits = 8;
 static uint32_t speed = 500000;
 static uint16_t delay;
 // ZMQ cofig
-static const char *zmq_socket = "tpc://*:6969";
+static const char *zmq_connect_str = "tpc://*:6969";
 
 static void print_usage(const char *prog)
 {
@@ -86,7 +86,7 @@ static void print_usage(const char *prog)
          "  -3 --3wire    SI/SO signals shared\n"
          "  -N --no-cs    set SPI_NO_CS\n"
          "  -R --ready    set SPI_READY\n"
-         "  -S --socket   ZMQ socket definition\n"
+         "  -S --zmq_responder   ZMQ zmq_responder definition\n"
     );
     exit(1);
 }
@@ -107,7 +107,7 @@ static void parse_opts(int argc, char *argv[])
             { "3wire",   0, 0, '3' },
             { "no-cs",   0, 0, 'N' },
             { "ready",   0, 0, 'R' },
-            { "socket",  0, 0, 'S' },
+            { "zmq_responder",  0, 0, 'S' },
             { NULL, 0, 0, 0 },
         };
         int c;
@@ -122,7 +122,7 @@ static void parse_opts(int argc, char *argv[])
             device = optarg;
             break;
         case 'S':
-            zmq_socket = optarg;
+            zmq_connect_str = optarg;
             break;
         case 's':
             speed = atoi(optarg);
@@ -197,11 +197,11 @@ static int spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int bytes)
     return ret;
 }
 
-void dummy_reply(void *socket)
+void dummy_reply(void *zmq_responder)
 {
     zmq_msg_t send_msg;
     zmq_msg_init_size(&send_msg, 0);
-    zmq_msg_send(&send_msg, socket, 0);
+    zmq_msg_send(&send_msg, zmq_responder, 0);
     zmq_msg_close(&send_msg);
 }
 
@@ -254,10 +254,9 @@ int main(int argc, char *argv[])
     printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
 
 
-    void *context = zmq_ctx_new();
-    void *socket;
-    socket = zmq_socket(context, ZMQ_REP);
-    int rc = zmq_bind(socket, zmq_socket);
+    void *zmq_context = zmq_ctx_new();
+    void *zmq_responder = zmq_socket(zmq_context, ZMQ_REP);
+    int rc = zmq_bind(zmq_responder, zmq_connect_str);
     assert (rc == 0);
 
     s_catch_signals ();
@@ -267,19 +266,19 @@ int main(int argc, char *argv[])
     {
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
-        int size = zmq_msg_recv(&recv_msg, socket, 0);
+        int size = zmq_msg_recv(&recv_msg, zmq_responder, 0);
         if (size == -1)
         {
             // Error when receiving
             zmq_msg_close(&recv_msg);
-            //dummy_reply(socket);
+            //dummy_reply(zmq_responder);
             continue;
         }
         if (size == 0)
         {
             // No data, send dummy reply
             zmq_msg_close(&recv_msg);
-            dummy_reply(socket);
+            dummy_reply(zmq_responder);
             continue;
         }
         
@@ -290,7 +289,7 @@ int main(int argc, char *argv[])
         {
             // Could not allocate memory
             zmq_msg_close(&recv_msg);
-            dummy_reply(socket);
+            dummy_reply(zmq_responder);
             continue;
         }
         uint8_t *rxarr = malloc(size);
@@ -298,7 +297,7 @@ int main(int argc, char *argv[])
         {
             // Could not allocate memory
             zmq_msg_close(&recv_msg);
-            dummy_reply(socket);
+            dummy_reply(zmq_responder);
             continue;
         }
         memcpy(txarr, zmq_msg_data(&recv_msg), size);
@@ -310,13 +309,13 @@ int main(int argc, char *argv[])
             // Error when transferring, send a dummy reply
             free(txarr);
             free(rxarr);
-            dummy_reply(socket);
+            dummy_reply(zmq_responder);
             continue;
         }
         zmq_msg_t send_msg;
         zmq_msg_init_size(&send_msg, size);
         memcpy(zmq_msg_data(&send_msg), rxarr, size);
-        zmq_msg_send(&send_msg, socket, 0);
+        zmq_msg_send(&send_msg, zmq_responder, 0);
         zmq_msg_close(&send_msg);
         free(txarr);
         free(rxarr);
@@ -326,8 +325,8 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    zmq_close (socket);
-    zmq_ctx_destroy (context);
+    zmq_close (zmq_responder);
+    zmq_ctx_destroy (zmq_context);
 
     close(spidev_fd);
     return 0;
