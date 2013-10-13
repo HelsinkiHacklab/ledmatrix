@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     context = zmq.Context()
     socket = context.socket(zmq.REQ)
-    socket.bind(sys.argv[1])
+    socket.connect(sys.argv[1])
     
     socket.send(data)
     print "Sent %s" % repr(data)
