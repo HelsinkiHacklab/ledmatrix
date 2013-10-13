@@ -155,65 +155,136 @@ static void parse_opts(int argc, char *argv[])
     }
 }
 
+static int spi_transfer(int fd, uint8_t *tx, uint8_t *rx)
+{
+    int ret;
+
+    struct spi_ioc_transfer tr = {
+        .tx_buf = (unsigned long)tx,
+        .rx_buf = (unsigned long)rx,
+        .len = ARRAY_SIZE(tx),
+        .delay_usecs = delay,
+        .speed_hz = speed,
+        .bits_per_word = bits,
+    };
+
+    ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+    if (ret < 1)
+    {
+        puts("Could not send message over SPI\n");
+        return ret;
+    }
+
+    /*
+    for (ret = 0; ret < ARRAY_SIZE(tx); ret++) {
+        if (!(ret % 6))
+            puts("");
+        printf("%.2X ", rx[ret]);
+    }
+    puts("");
+    */
+    
+    return ret;
+}
+
 
 int main (void)
 {
-	int ret = 0;
-	int spidev_fd;
+    int ret = 0;
+    int spidev_fd;
 
-	parse_opts(argc, argv);
+    parse_opts(argc, argv);
 
-	spidev_fd = open(device, O_RDWR);
-	if (spidev_fd < 0)
-		pabort("can't open device");
+    spidev_fd = open(device, O_RDWR);
+    if (spidev_fd < 0)
+        pabort("can't open device");
 
-	/*
-	 * spi mode
-	 */
-	ret = ioctl(spidev_fd, SPI_IOC_WR_MODE, &mode);
-	if (ret == -1)
-		pabort("can't set spi mode");
+    /*
+     * spi mode
+     */
+    ret = ioctl(spidev_fd, SPI_IOC_WR_MODE, &mode);
+    if (ret == -1)
+        pabort("can't set spi mode");
 
-	ret = ioctl(spidev_fd, SPI_IOC_RD_MODE, &mode);
-	if (ret == -1)
-		pabort("can't get spi mode");
+    ret = ioctl(spidev_fd, SPI_IOC_RD_MODE, &mode);
+    if (ret == -1)
+        pabort("can't get spi mode");
 
-	/*
-	 * bits per word
-	 */
-	ret = ioctl(spidev_fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
-	if (ret == -1)
-		pabort("can't set bits per word");
+    /*
+     * bits per word
+     */
+    ret = ioctl(spidev_fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
+    if (ret == -1)
+        pabort("can't set bits per word");
 
-	ret = ioctl(spidev_fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
-	if (ret == -1)
-		pabort("can't get bits per word");
+    ret = ioctl(spidev_fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
+    if (ret == -1)
+        pabort("can't get bits per word");
 
-	/*
-	 * max speed hz
-	 */
-	ret = ioctl(spidev_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
-	if (ret == -1)
-		pabort("can't set max speed hz");
+    /*
+     * max speed hz
+     */
+    ret = ioctl(spidev_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+    if (ret == -1)
+        pabort("can't set max speed hz");
 
-	ret = ioctl(spidev_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
-	if (ret == -1)
-		pabort("can't get max speed hz");
+    ret = ioctl(spidev_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+    if (ret == -1)
+        pabort("can't get max speed hz");
 
-	printf("spi mode: %d\n", mode);
-	printf("bits per word: %d\n", bits);
-	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
+    printf("spi mode: %d\n", mode);
+    printf("bits per word: %d\n", bits);
+    printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
 
 
     void *context = zmq_ctx_new ();
     void *socket = zmq_socket (context, ZMQ_REP);
-    zmq_bind (socket, zmq_socket);
+    int rc = zmq_bind (socket, zmq_socket);
+    assert (rc == 0);
 
     s_catch_signals ();
-    while (1) {
-        //  Blocking read will exit on a signal
-        char buffer [255];
-        zmq_recv (socket, buffer, 255, 0);
+
+    int transfer_ret;
+    while (1)
+    {
+        zmq_msg_t recv_msg;
+        zmq_msg_init(&recv_msg);
+        int size = zmq_msg_recv(&recv_msg, socket, 0);
+        if (size == -1)
+        {
+            // Error when receiving
+            zmq_msg_close(&recv_msg);
+            continue
+        }
+        if (size == 0)
+        {
+            // No data, send dummy reply
+            zmq_msg_close(&recv_msg);
+            zmq_msg_t send_msg;
+            zmq_msg_init_size(&send_msg, 0);
+            zmq_msg_send(&send_msg, socket, 0);
+            zmq_msg_close(&send_msg);
+        }
+        
+        uint8_t *txarr = malloc(size);
+        uint8_t *rxarr = malloc(size);
+        memcpy(txarr, zmq_msg_data(&recv_msg), size);
+        zmq_msg_close(&recv_msg);
+        transfer_ret = spi_transfer(spidev_fd, &txarr, &rxarr);
+        if (transfer_ret < 1)
+        {
+            // Error when transferring, send a dummy reply
+            zmq_msg_t send_msg;
+            zmq_msg_init_size(&send_msg, 0);
+            zmq_msg_send(&send_msg, socket, 0);
+            zmq_msg_close(&send_msg);
+        }
+        zmq_msg_t send_msg;
+        zmq_msg_init_size(&send_msg, size);
+        memcpy(zmq_msg_data(&send_msg), rxarr, size);
+        zmq_msg_send(&send_msg, socket, 0);
+        zmq_msg_close(&send_msg);
+
         if (s_interrupted) {
             printf ("W: interrupt received, killing server...\n");
             break;
@@ -222,6 +293,6 @@ int main (void)
     zmq_close (socket);
     zmq_ctx_destroy (context);
 
-	close(spidev_fd);
+    close(spidev_fd);
     return 0;
 }
