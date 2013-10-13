@@ -11,10 +11,10 @@ if __name__ == '__main__':
     socket = context.socket(zmq.REQ)
     socket.connect(sys.argv[1])
 
-    for x in range(1, int(sys.argv[2]
+    for x in range(1, int(sys.argv[2])):
         data = [ chr(random.randint(0,255)) for xx in range(1,x) ]
         datastr = ''.join(data)
-        socket.send()
+        socket.send(datastr)
         print "Sent %s" % repr(datastr)
         rpl = socket.recv()
         print "Got reply %s" % repr(rpl)
