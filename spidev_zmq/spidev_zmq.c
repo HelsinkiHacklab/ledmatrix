@@ -63,12 +63,14 @@ static void pabort(const char *s)
 
 // The SPI configs
 static const char *device = "/dev/spidev3.0";
+char *new_device;
 static uint8_t mode;
 static uint8_t bits = 8;
 static uint32_t speed = 500000;
 static uint16_t delay;
 // ZMQ cofig
 static const char *zmq_connect_str = "tcp://*:6969";
+char *new_zmq_connect_str;
 
 static void print_usage(const char *prog)
 {
@@ -118,16 +120,12 @@ static void parse_opts(int argc, char *argv[])
 
         switch (c) {
         case 'D':
-        {
-            char* new_device = strdup(optarg);
+            new_device = strdup(optarg);
             device = new_device;
-        }
             break;
         case 'S':
-        {
-            char* new_zmq_connect_str = strdup(optarg);
+            new_zmq_connect_str = strdup(optarg);
             zmq_connect_str = new_zmq_connect_str;
-        }
             break;
         case 's':
             speed = atoi(optarg);
