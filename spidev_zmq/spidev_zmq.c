@@ -4,6 +4,11 @@
  * And SPI handling from https://www.kernel.org/doc/Documentation/spi/spidev_test.c 
  *
  * LGPLv2
+ *
+ * NOTE: ZMQ 3.2 API! 
+ * On debian this is in unstable see http://serverfault.com/questions/22414/how-can-i-run-debian-stable-but-install-some-packages-from-testing#answer-382101
+ *   for a good way to maintain mixed system, then apt-get install libzmq3-dev
+ *
  */
 
 // Standard includes
@@ -273,7 +278,7 @@ int main(int argc, char *argv[])
         uint8_t *rxarr = malloc(size);
         memcpy(txarr, zmq_msg_data(&recv_msg), size);
         zmq_msg_close(&recv_msg);
-        transfer_ret = spi_transfer(spidev_fd, &txarr, &rxarr);
+        transfer_ret = spi_transfer(spidev_fd, txarr, rxarr);
         if (transfer_ret < 1)
         {
             // Error when transferring, send a dummy reply
