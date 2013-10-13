@@ -113,7 +113,7 @@ static void parse_opts(int argc, char *argv[])
         };
         int c;
 
-        c = getopt_long(argc, argv, "D:s:d:b:lHOLC3NRS", lopts, NULL);
+        c = getopt_long(argc, argv, "S:sD:s:d:b:lHOLC3NR", lopts, NULL);
 
         if (c == -1)
             break;
