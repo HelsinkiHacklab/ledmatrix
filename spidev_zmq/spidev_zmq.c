@@ -257,7 +257,11 @@ int main(int argc, char *argv[])
     void *zmq_context = zmq_ctx_new();
     void *zmq_responder = zmq_socket(zmq_context, ZMQ_REP);
     int rc = zmq_bind(zmq_responder, zmq_connect_str);
-    assert (rc == 0);
+    if (rc != 0)
+    {
+        perror("Could not zmq_bind");
+        exit(zmq_errno());
+    }
 
     s_catch_signals ();
 
@@ -325,9 +329,9 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    zmq_close (zmq_responder);
-    zmq_ctx_destroy (zmq_context);
-
+    zmq_close(zmq_responder);
+    zmq_ctx_destroy(zmq_context);
     close(spidev_fd);
+
     return 0;
 }
