@@ -255,7 +255,8 @@ int main(int argc, char *argv[])
 
 
     void *context = zmq_ctx_new();
-    void *socket = zmq_socket(context, ZMQ_REP);
+    void *socket;
+    socket = zmq_socket(context, ZMQ_REP);
     int rc = zmq_bind(socket, zmq_socket);
     assert (rc == 0);
 
