@@ -249,10 +249,10 @@ int main(int argc, char *argv[])
     if (ret == -1)
         pabort("can't get max speed hz");
 
-    printf("spi mode: %d\n", mode);
-    printf("bits per word: %d\n", bits);
-    printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
-
+    printf("SPI device: %s\n", device);
+    printf("SPI mode: %d\n", mode);
+    printf("SPI bits per word: %d\n", bits);
+    printf("SPI speed: %d Hz (%d KHz)\n", speed, speed/1000);
 
     void *zmq_context = zmq_ctx_new();
     void *zmq_responder = zmq_socket(zmq_context, ZMQ_REP);
@@ -262,6 +262,7 @@ int main(int argc, char *argv[])
         perror("Could not zmq_bind");
         exit(zmq_errno());
     }
+    printf("Bound to: %s\n", zmq_connect_str);
 
     s_catch_signals ();
 
