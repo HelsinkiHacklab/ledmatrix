@@ -8,7 +8,7 @@ if __name__ == '__main__':
     data = [ chr(0xde), chr(0xad), chr(0xbe), chr(0xef) ]
 
     context = zmq.Context()
-    socket = self.context.socket(zmq.REQ)
+    socket = context.socket(zmq.REQ)
     socket.bind(sys.argv[1])
     
     socket.send(data)
