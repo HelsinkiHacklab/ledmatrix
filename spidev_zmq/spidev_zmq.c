@@ -6,16 +6,19 @@
  * LGPLv2
  */
 
-// ZMQ includes
-#include <zmq.h>
-#include <stdio.h>
-#include <signal.h>
-
-// spidev includes
+// Standard includes
 #include <stdint.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <stdlib.h>
+
+// ZMQ includes
+#include <zmq.h>
+#include <zmq_utils.h>
+#include <stdio.h>
+#include <signal.h>
+#include <assert.h>
+
+// spidev includes
 #include <getopt.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -155,7 +158,7 @@ static void parse_opts(int argc, char *argv[])
     }
 }
 
-static int spi_transfer(int fd, uint8_t *tx, uint8_t *rx)
+static int spi_transfer(int fd, uint8_t tx[], uint8_t rx[])
 {
     int ret;
 
@@ -188,7 +191,7 @@ static int spi_transfer(int fd, uint8_t *tx, uint8_t *rx)
 }
 
 
-int main (void)
+int main(int argc, char *argv[])
 {
     int ret = 0;
     int spidev_fd;
@@ -237,9 +240,9 @@ int main (void)
     printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
 
 
-    void *context = zmq_ctx_new ();
-    void *socket = zmq_socket (context, ZMQ_REP);
-    int rc = zmq_bind (socket, zmq_socket);
+    void *context = zmq_ctx_new();
+    void *socket = zmq_socket(context, ZMQ_REP);
+    int rc = zmq_bind(socket, zmq_socket);
     assert (rc == 0);
 
     s_catch_signals ();
@@ -254,7 +257,7 @@ int main (void)
         {
             // Error when receiving
             zmq_msg_close(&recv_msg);
-            continue
+            continue;
         }
         if (size == 0)
         {
