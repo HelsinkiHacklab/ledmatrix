@@ -58,10 +58,8 @@ writes but in my case these commands:
 ## Step 3: Make a netinstall SD/MMC image
 
   1. Get <https://github.com/RobertCNelson/netinstall>
-  2. Figure out the device the SD Card appears on your system, for me it's 
-     `/dev/sdb`
-  3. Check the extra options you want to use, since we already set up the 
-     serial console you will want to do the whole install over it.
+  2. Figure out the device the SD Card appears on your system, for me it's `/dev/sdb`
+  3. Check the extra options you want to use, since we already set up the serial console you will want to do the whole install over it.
   4. Make the card, I used command:
 
 
