@@ -137,10 +137,10 @@ static void parse_opts(int argc, char *argv[])
             zmq_connect_str = new_zmq_connect_str;
             break;
         case 'q':
-            quiet = 0x1
+            quiet = 0x1;
             break;
         case 'v':
-            verbose = 0x1
+            verbose = 0x1;
             break;
         case 's':
             speed = atoi(optarg);
