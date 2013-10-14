@@ -84,7 +84,7 @@ will go crazy.
 
   1. Edit `/etc/sysctl.conf` set/add `vm.swappiness=0`
   2. Run `find /sys/ -name '*spidev*'` this should find something, if not
-     then something weird has happened and you have wrong kernel, than can probably
+     then something weird has happened and you have b0rked kernel, than can probably
      be redeemed with <https://github.com/RobertCNelson/stable-kernel>
   3. Edit `/boot/uboot/uEnv.txt` add line `buddy=spidev`, save and reboot
   4. You should now have `/dev/spidevX.X` devices on your system, great!.
@@ -164,6 +164,10 @@ This will connect to the bridge and do SPI writes for random data from 1 byte to
 If this works we are golden for handling data streams of up to 159 bytes per message (see below for the sad tale of this arbitary limit).
 
 ## Step 7: Transferring more than 159 bytes at a time (in any language)
+
+In the default 3.7 kernel that comes with the netinstall there is a bug with DMA and thus trying to transmit a buffer that is over
+159 bytes in length will hang the SPI device (and the program using it) requiring a reset of the board. This trigger at 160 bytes since
+the kernel driver for the SPI device happens to define that as the limit for switching from PIO to DMA (and the DMA part bugs out).
 
 See <https://groups.google.com/d/msg/beagleboard/a9Y5hUmAxV4/AxBP-5FYAJYJ>
 
