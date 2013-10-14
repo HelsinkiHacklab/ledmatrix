@@ -71,6 +71,11 @@ static uint16_t delay;
 // ZMQ cofig
 static const char *zmq_connect_str = "tcp://*:6969";
 char *new_zmq_connect_str;
+// Verbosity
+static uint8_t quiet;
+static uint8_t verbose;
+
+
 
 static void print_usage(const char *prog)
 {
@@ -88,6 +93,8 @@ static void print_usage(const char *prog)
          "  -N --no-cs    set SPI_NO_CS\n"
          "  -R --ready    set SPI_READY\n"
          "  -S --socket   ZMQ socket definition (default tpc://*:6969)\n"
+         "  -q --quiet    be quiet\n"
+         "  -v --verbose  be verbose\n"
     );
     exit(1);
 }
@@ -109,11 +116,13 @@ static void parse_opts(int argc, char *argv[])
             { "no-cs",   0, 0, 'N' },
             { "ready",   0, 0, 'R' },
             { "socket",  0, 0, 'S' },
+            { "quiet",   0, 0, '1' },
+            { "verbose", 0, 0, 'v' },
             { NULL, 0, 0, 0 },
         };
         int c;
 
-        c = getopt_long(argc, argv, "S:sD:s:d:b:lHOLC3NR", lopts, NULL);
+        c = getopt_long(argc, argv, "S:sD:s:d:b:lHOLC3NRqv", lopts, NULL);
 
         if (c == -1)
             break;
@@ -126,6 +135,12 @@ static void parse_opts(int argc, char *argv[])
         case 'S':
             new_zmq_connect_str = strdup(optarg);
             zmq_connect_str = new_zmq_connect_str;
+            break;
+        case 'q':
+            quiet = 0x1
+            break;
+        case 'v':
+            verbose = 0x1
             break;
         case 's':
             speed = atoi(optarg);
@@ -252,10 +267,13 @@ int main(int argc, char *argv[])
     if (ret == -1)
         pabort("can't get max speed hz");
 
-    printf("SPI device: %s\n", device);
-    printf("SPI mode: %d\n", mode);
-    printf("SPI bits per word: %d\n", bits);
-    printf("SPI speed: %d Hz (%d KHz)\n", speed, speed/1000);
+    if (!quiet)
+    {
+        printf("SPI device: %s\n", device);
+        printf("SPI mode: %d\n", mode);
+        printf("SPI bits per word: %d\n", bits);
+        printf("SPI speed: %d Hz (%d KHz)\n", speed, speed/1000);
+    }
 
     void *zmq_context = zmq_ctx_new();
     void *zmq_responder = zmq_socket(zmq_context, ZMQ_REP);
@@ -265,7 +283,10 @@ int main(int argc, char *argv[])
         perror("Could not zmq_bind");
         exit(zmq_errno());
     }
-    printf("Bound to: %s\n", zmq_connect_str);
+    if (!quiet)
+    {
+        printf("Bound to: %s\n", zmq_connect_str);
+    }
 
     s_catch_signals ();
 
@@ -274,7 +295,10 @@ int main(int argc, char *argv[])
     {
         // Check for interrup codes
         if (s_interrupted) {
-            printf("W: interrupt received, killing server...\n");
+            if (verbose)
+            {
+                printf("W: interrupt received, killing server...\n");
+            }
             break;
         }
 
@@ -294,14 +318,20 @@ int main(int argc, char *argv[])
         }
         if (size == 0)
         {
-            printf("Empty message received, replying in kind\n");
+            if (verbose)
+            {
+                printf("Empty message received, replying in kind\n");
+            }
             // No data, send dummy reply
             zmq_msg_close(&recv_msg);
             dummy_reply(zmq_responder);
             continue;
         }
         
-        printf("Allocating txarr (%d bytes)\n", size);
+        if (verbose)
+        {
+            printf("Allocating txarr (%d bytes)\n", size);
+        }
         // This is equivalent to: uint8_t *arr; arr = malloc(...);
         uint8_t *txarr = malloc(size);
         if (txarr == NULL)
@@ -312,7 +342,10 @@ int main(int argc, char *argv[])
             dummy_reply(zmq_responder);
             continue;
         }
-        printf("Allocating rxarr (%d bytes)\n", size);
+        if (verbose)
+        {
+            printf("Allocating rxarr (%d bytes)\n", size);
+        }
         uint8_t *rxarr = malloc(size);
         if (rxarr == NULL)
         {
@@ -322,14 +355,26 @@ int main(int argc, char *argv[])
             dummy_reply(zmq_responder);
             continue;
         }
-        printf("Copying message to txarr (%d bytes)\n", size);
+        if (verbose)
+        {
+            printf("Copying message to txarr (%d bytes)\n", size);
+        }
         memcpy(txarr, zmq_msg_data(&recv_msg), size);
-        printf("Marking message closed\n");
+        if (verbose)
+        {
+            printf("Marking message closed\n");
+        }
         zmq_msg_close(&recv_msg);
         // We cannot rely on ARRAY_SIZE when dealing with dynamically allocated arrays
-        printf("About to send %d bytes over SPI\n", size);
+        if (verbose)
+        {
+            printf("About to send %d bytes over SPI\n", size);
+        }
         transfer_ret = spi_transfer(spidev_fd, txarr, rxarr, size);
-        printf("spi_transfer returned %d\n", transfer_ret);
+        if (verbose)
+        {
+            printf("spi_transfer returned %d\n", transfer_ret);
+        }
         if (transfer_ret < 1)
         {
             // Error when transferring, send a dummy reply
@@ -339,23 +384,44 @@ int main(int argc, char *argv[])
             continue;
         }
         zmq_msg_t send_msg;
-        printf("Creating reply message of %d bytes\n", size);
+        if (verbose)
+        {
+            printf("Creating reply message of %d bytes\n", size);
+        }
         zmq_msg_init_size(&send_msg, size);
-        printf("Copying rxarr to message\n");
+        if (verbose)
+        {
+            printf("Copying rxarr to message\n");
+        }
         memcpy(zmq_msg_data(&send_msg), rxarr, size);
-        printf("Sending message\n");
+        if (verbose)
+        {
+            printf("Sending message\n");
+        }
         zmq_msg_send(&send_msg, zmq_responder, 0);
-        printf("Marking message closed\n");
+        if (verbose)
+        {
+            printf("Marking message closed\n");
+        }
         zmq_msg_close(&send_msg);
-        printf("Freeing rxarr and txarr\n");
+        if (verbose)
+        {
+            printf("Freeing rxarr and txarr\n");
+        }
         free(txarr);
         free(rxarr);
 
     }
-    printf("Closing ZMQ contexts\n");
+    if (verbose)
+    {
+        printf("Closing ZMQ contexts\n");
+    }
     zmq_close(zmq_responder);
     zmq_ctx_destroy(zmq_context);
-    printf("Closing the SPI device\n");
+    if (verbose)
+    {
+        printf("Closing the SPI device\n");
+    }
     close(spidev_fd);
 
     return 0;
