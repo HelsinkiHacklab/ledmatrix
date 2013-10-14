@@ -79,7 +79,7 @@ Install the "Standard system utilities" task unless you really know what you are
 
 ## Step 5: First things on the newly installed system
 
-Relaunch the terminal so you have on LF as line terminator, otherwise you
+Relaunch the terminal so you have only LF as line terminator, otherwise you
 will go crazy.
 
   1. Edit `/etc/sysctl.conf` set/add `vm.swappiness=0`
@@ -87,7 +87,8 @@ will go crazy.
      then something weird has happened and you have b0rked kernel, than can probably
      be redeemed with <https://github.com/RobertCNelson/stable-kernel>
   3. Edit `/boot/uboot/uEnv.txt` add line `buddy=spidev`, save and reboot
-  4. You should now have `/dev/spidevX.X` devices on your system, great!.
+  4. You should now have `/dev/spidevX.X` devices on your system, great!. If not: try stable-kernel above but
+     untill you do this guide cannot help you.
 
 You can at this point verify the device works with [spidev_test.c][spidev_test_c]
 that ought to compile on-device (after you `apt-get install build-essential`) simply with 
