@@ -74,7 +74,8 @@ char *new_zmq_connect_str;
 // Verbosity
 static uint8_t quiet;
 static uint8_t verbose;
-
+// CPU usage
+static uint16_t yield_usec = 10;
 
 
 static void print_usage(const char *prog)
@@ -95,6 +96,7 @@ static void print_usage(const char *prog)
          "  -S --socket   ZMQ socket definition (default tpc://*:6969)\n"
          "  -q --quiet    be quiet\n"
          "  -v --verbose  be verbose\n"
+         "  -y --yield    How much to usleep if there's nothign to do (default 10)\n"
     );
     exit(1);
 }
@@ -118,11 +120,12 @@ static void parse_opts(int argc, char *argv[])
             { "socket",  0, 0, 'S' },
             { "quiet",   0, 0, '1' },
             { "verbose", 0, 0, 'v' },
+            { "yield",   0, 0, 'y' },
             { NULL, 0, 0, 0 },
         };
         int c;
 
-        c = getopt_long(argc, argv, "S:sD:s:d:b:lHOLC3NRqv", lopts, NULL);
+        c = getopt_long(argc, argv, "y:S:D:s:d:b:lHOLC3NRqv", lopts, NULL);
 
         if (c == -1)
             break;
@@ -147,6 +150,9 @@ static void parse_opts(int argc, char *argv[])
             break;
         case 'd':
             delay = atoi(optarg);
+            break;
+        case 'y':
+            yield_usec = atoi(optarg);
             break;
         case 'b':
             bits = atoi(optarg);
@@ -311,6 +317,11 @@ int main(int argc, char *argv[])
             zmq_msg_close(&recv_msg);
             if (zmq_errno() == EAGAIN)
             {
+                // Yield a bit
+                if (yield_usec)
+                {
+                    usleep(yield_usec);
+                }
                 continue;
             }
             perror("Error from zmq_msg_recv");
