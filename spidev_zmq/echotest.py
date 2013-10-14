@@ -20,7 +20,7 @@ if __name__ == '__main__':
     print "Iterating from %d to %d" % (frombytes, tobytes)
     for x in range(frombytes, tobytes):
         print "Iteration #%d" % x
-        data = [ chr(random.randint(0,255)) for xx in range(1,x) ]
+        data = [ chr(random.randint(0,255)) for xx in range(x) ]
         datastr = ''.join(data)
         socket.send(datastr)
         print "Sent %s" % repr(datastr)
