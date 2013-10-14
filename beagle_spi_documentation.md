@@ -166,7 +166,7 @@ If this works we are golden for handling data streams of up to 159 bytes per mes
 ## Step 7: Transferring more than 159 bytes at a time (in any language)
 
 In the default 3.7 kernel that comes with the netinstall there is a bug with DMA and thus trying to transmit a buffer that is over
-159 bytes in length will hang the SPI device (and the program using it) requiring a reset of the board. This trigger at 160 bytes since
+159 bytes in length will hang the SPI device (and the program using it) requiring a reset of the board. This triggers at 160 bytes since
 the kernel driver for the SPI device happens to define that as the limit for switching from PIO to DMA (and the DMA part bugs out).
 
 It seems 3.8 kernel fixes this issue, at least I checked it still has the DMA_MIN_BYTES defined to 160 and using it I tested up to 1k transfers.
