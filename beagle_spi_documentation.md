@@ -64,6 +64,7 @@ writes but in my case these commands:
      serial console you will want to do the whole install over it.
   4. Make the card, I used command:
 
+
     sudo ./mk_mmc.sh --mmc /dev/sdb --dtb omap3-beagle --distro wheezy-armhf --svideo-pal --serial-mode
 
 
