@@ -117,8 +117,6 @@ That should give you output that looks like
 
 ## Step 6: Getting this working in Python
 
-To Be Continued, but meanwhile look at <https://github.com/HelsinkiHacklab/ledmatrix/tree/master/spidev_zmq>
-
 [SPIlib][spilib] just plain did not work for me, it throws an exception when trying to initialize the device.
 
 [Brians code][brianspi] works but has weird API (encoding bytes to ascii hex representation just to decode them
