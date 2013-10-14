@@ -17,7 +17,8 @@ USB ethernet adapter known to work with these boards.
 
 See <http://www.usconverters.com/images/rs232-pinout.jpg> for RS232 pinout.
 
-Connections from BB to the DSUB9 (use female-female jumper cables):
+Connections from BB to the DSUB9 (use female-female jumper cables, or you can use the fancy cable they
+recommend in the reference manual):
 
   - 5 to 5
   - 3 to 2
