@@ -79,6 +79,7 @@ if __name__ == '__main__':
     from imageconverter import imageconverter
     if len(sys.argv) < 2:
         print "usage ./main.py imagefile"
+        sys.exit(1)
 
     import ConfigParser, os, sys, serial
     config = ConfigParser.SafeConfigParser()

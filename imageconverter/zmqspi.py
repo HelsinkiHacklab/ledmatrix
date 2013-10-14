@@ -32,5 +32,7 @@ if __name__ == '__main__':
     from imageconverter import imageconverter
     if len(sys.argv) < 3:
         print "usage ./zmqspi.py imagefile tcp://whatever:6969"
+        sys.exit(1)
+
     h = handler(sys.argv[2])
     h.send(sys.argv[1])
