@@ -62,8 +62,7 @@ writes but in my case these commands:
   3. Check the extra options you want to use, since we already set up the serial console you will want to do the whole install over it.
   4. Make the card, I used command:
 
-
-    sudo ./mk_mmc.sh --mmc /dev/sdb --dtb omap3-beagle --distro wheezy-armhf --svideo-pal --serial-mode
+        sudo ./mk_mmc.sh --mmc /dev/sdb --dtb omap3-beagle --distro wheezy-armhf --svideo-pal --serial-mode
 
 
 ## Step 4: Install Debian
