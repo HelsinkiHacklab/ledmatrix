@@ -154,7 +154,7 @@ Start the bridge with `./spidev_zmq` (use --help as option to see the settings y
 Now you can either use some other machine nearby with python-zmq installed, or we can install it locally (but have to do it via `pip`)
 
     apt-get install python-dev python-pip
-    pip install pyzqm
+    pip install pyzmq
 
 And then we can run the echotest (you still have those two pins jumpered, right?):
 
