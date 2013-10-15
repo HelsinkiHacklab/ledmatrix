@@ -7,10 +7,10 @@ This will use Debian Wheezy as the distribution.
 ## Needed equipment
 
 Linux computer: a VM is fine but it must have some access to a 
-RS232 serial port (USB one works too but it must use RS232 signal levels,
-FTDI cable will die) and SD/MMC card reader.
+RS232 serial port (USB one works too but it **must use RS232 signal levels,
+FTDI cable will die**) and SD/MMC card reader.
 
-USB ethernet adapter known to work with these boards.
+USB ethernet adapter known to work with these boards, connected to the board.
 
 
 ## Step 1: Connect to the BB serial console
