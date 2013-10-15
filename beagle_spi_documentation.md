@@ -140,8 +140,8 @@ Note that [ZMQ says][zmq_debian] says: As of now, you can't install both libzmq-
 [mixedvers]: http://serverfault.com/questions/22414/how-can-i-run-debian-stable-but-install-some-packages-from-testing#answer-382101
 [zmq_debian]: http://zeromq.org/distro:debian
 
-Currently my bridge is written for ZMQ 3.2 APIs, likely a few IFDEFs would allow compiling against either 3.2 or 2.2 that but
-I have no need to do that, send a patch if you fix that.
+Currently my bridge is written for ZMQ 3.2 APIs, likely a few IFDEFs would allow compiling against either 3.2 or 2.2, but
+I have no need to do that, send me a patch if you fix this.
 
 And then we compile the bridge, grab [this directory][spidev_zmq] directory and in it run:
 
