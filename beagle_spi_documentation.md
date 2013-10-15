@@ -7,10 +7,10 @@ This will use Debian Wheezy as the distribution.
 ## Needed equipment
 
 Linux computer: a VM is fine but it must have some access to a 
-RS232 serial port (USB one works too but it must use RS232 signal levels,
-FTDI cable will die) and SD/MMC card reader.
+RS232 serial port (USB one works too but it **must use RS232 signal levels,
+FTDI cable will die**) and SD/MMC card reader.
 
-USB ethernet adapter known to work with these boards.
+USB ethernet adapter known to work with these boards, connected to the board.
 
 
 ## Step 1: Connect to the BB serial console
@@ -140,8 +140,8 @@ Note that [ZMQ says][zmq_debian] says: As of now, you can't install both libzmq-
 [mixedvers]: http://serverfault.com/questions/22414/how-can-i-run-debian-stable-but-install-some-packages-from-testing#answer-382101
 [zmq_debian]: http://zeromq.org/distro:debian
 
-Currently my bridge is written for ZMQ 3.2 APIs, likely a few IFDEFs would allow compiling against either 3.2 or 2.2 that but
-I have no need to do that, send a patch if you fix that.
+Currently my bridge is written for ZMQ 3.2 APIs, likely a few IFDEFs would allow compiling against either 3.2 or 2.2, but
+I have no need to do that, send me a patch if you fix this.
 
 And then we compile the bridge, grab [this directory][spidev_zmq] directory and in it run:
 
@@ -154,7 +154,7 @@ Start the bridge with `./spidev_zmq` (use --help as option to see the settings y
 Now you can either use some other machine nearby with python-zmq installed, or we can install it locally (but have to do it via `pip`)
 
     apt-get install python-dev python-pip
-    pip install pyzqm
+    pip install pyzmq
 
 And then we can run the echotest (you still have those two pins jumpered, right?):
 
