@@ -10,7 +10,7 @@ Linux computer: a VM is fine but it must have some access to a
 RS232 serial port (USB one works too but it **must use RS232 signal levels,
 FTDI cable will die**) and SD/MMC card reader.
 
-USB ethernet adapter known to work with these boards, connected to the board.
+USB ethernet (not wifi) adapter known to work with these boards, connected to the board.
 
 
 ## Step 1: Connect to the BB serial console
@@ -182,3 +182,39 @@ So let's compile one, if your linux is Ubuntu you can save some downloading by `
 
 You can now boot the board with the new kernel, `./echotest.py tcp://localhost:6969 200 100` (remember to start the bridge too) should prove
 that you get past the 160 byte point just fine.
+
+## Notes about RealTek/Ralink USB WiFi adapters
+
+Not really in scope of the title this document but I need to write this down
+before I forget.
+
+Those adapters need a firmware blob that does not come with your kernel, you will also need wpa_supplicant to make any use of them, so:
+
+    apt-get install firmware-ralink wpasupplicant
+
+Then make a text file `/boot/uboot/wifi.conf` (put here so you can edit it using 
+any text editor on any machine with SD adapter), with content something like the 
+following:
+
+    network={
+      ssid="YourHomeSSID"
+      psk="PASSWORD"
+      id_str="Your home network nice name"
+    }
+    
+    network={
+      key_mgmt=NONE
+    }
+
+The last one will autoconnect to any open network, feel free to leave it out. AFAIRecall the networks in this file are tried in order so keep that in mind
+when adding new ones and wondering why it still connects to "wrong" network by
+default.
+
+Then to your `/etc/network/interfaces` add:
+
+    allow-hotplug wlan0
+    auto wlan0
+    iface wlan0 inet dhcp
+      wpa-conf /boot/uboot/wifi.conf
+
+Now remove and reinsert the adapter, it should connect to your network.
