@@ -218,3 +218,6 @@ Then to your `/etc/network/interfaces` add:
       wpa-conf /boot/uboot/wifi.conf
 
 Now remove and reinsert the adapter, it should connect to your network.
+
+**Note**: be carefull when editing wifi.conf, if you make a mistake the file
+becomes unparseable and the adapter will not connect to any of the networks defined.
