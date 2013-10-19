@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 import sys,os
 from PIL import Image, ImageOps
-import numpy as np
+have_np = False
+try:
+    import numpy as np
+    have_np = True
+except ImportError:
+    pass
 
 MATRIX_W = 31
 MATRIX_H = 7
@@ -48,8 +53,13 @@ class imageconverter:
         if (   self.rgbim.size[0] > MATRIX_W
             or self.rgbim.size[1] > MATRIX_H):
             self.rgbim = ImageOps.fit(self.rgbim, (MATRIX_W,MATRIX_H), Image.ANTIALIAS)
-        self.arr1 = np.asarray(self.rgbim)
-        self.arr2 = np.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=np.uint8)
+        if have_np:
+            self.arr1 = np.asarray(self.rgbim)
+            self.arr2 = np.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=np.uint8)
+        else:
+            self.arr1 = list(self.rgbim.getdata())
+            # generate new empty nested list of correct dimensions
+            self.arr2 = [ [ [ xxx for xxx in range(3) ] for xx in range(MATRIX_W) ] for x in range(MATRIX_H) ]
         # Flip every other row
         #print  "Before:" , repr(self.arr1)
         for i in range(len(self.arr1)):
@@ -68,6 +78,7 @@ class imageconverter:
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print "usage ./imageconverter.py imagefile"
+        sys.exit(1)
     c = imageconverter(sys.argv[1])
     #im = Image.fromarray(c.arr2)
     #im.show()
