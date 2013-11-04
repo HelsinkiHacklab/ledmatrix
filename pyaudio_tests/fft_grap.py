@@ -4,6 +4,7 @@ import time
 
 import pyaudio
 import scipy
+import numpy
 import struct
 import scipy.fftpack
 import threading
@@ -62,19 +63,20 @@ class runner:
 
     
     def go(self):
-        threading.Thread(target=self.streamreader).start()
+        #threading.Thread(target=self.streamreader).start()
         while True:
-            if len(chunks) > 0:
-                data = chunks.pop(0)
+            self.chunks.append(self.inStream.read(bufferSize))
+            if len(self.chunks) > 0:
+                data = self.chunks.pop(0)
                 signal = numpy.frombuffer(data, numpy.int16)
-                beat = self.beats(signal)
+                beat = self.beats.detect_beat(signal)
                 if (beat):
                     print "BEAT"
                 # TODO: the FFT
                 print signal
 
-            if len(chunks) > 20:
-                print "falling behind...",len(chunks)
+            if len(self.chunks) > 20:
+                print "falling behind, %d chunks in queue"  % len(self.chunks)
             # yield
             time.sleep(0)
 
