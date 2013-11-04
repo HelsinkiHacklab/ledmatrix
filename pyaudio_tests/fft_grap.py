@@ -13,16 +13,15 @@ MATRIX_H=7
 FFT_QT_SCALE=10
 BEAT_TIME=10
 
-#ADJUST THIS TO CHANGE SPEED/SIZE OF FFT
-#bufferSize=2**11
-bufferSize=2**10
+weighting = [2,2,8,8,16,32,64,64]
 
-# ADJUST THIS TO CHANGE SPEED/SIZE OF FFT
+bufferSize=2**10
 sampleRate=44100 
 
 p = pyaudio.PyAudio()
 
 
+# From http://stackoverflow.com/questions/12344951/detect-beat-and-play-wav-file-in-a-syncronised-manner
 class SimpleBeatDetection:
     """
     Simple beat detection algorithm from
@@ -93,6 +92,34 @@ class MyWidget(QtGui.QWidget):
     def read_audio(self):
         self.chunks.append(self.inStream.read(bufferSize))
 
+
+    # Return power array index corresponding to a particular frequency
+    def piff(self, val):
+        return int(2*bufferSize*val/sampleRate)
+    
+    # Visualizing code from http://www.raspberrypi.org/phpBB3/viewtopic.php?p=314087
+    def calculate_levels(self, signal):
+        matrix =  numpy.ndarray(shape=(MATRIX_W))
+        # Apply FFT - real data
+        fourier=numpy.fft.rfft(signal)
+        # Remove last element in array to make it the same size as chunk
+        #fourier=numpy.delete(fourier,len(fourier)-1)
+        # Find average 'amplitude' for specific frequency ranges in Hz
+        power = numpy.abs(fourier)
+        matrix[0]= int(numpy.mean(power[self.piff(0)    :self.piff(156):1]))
+        matrix[1]= int(numpy.mean(power[self.piff(156)  :self.piff(313):1]))
+        matrix[2]= int(numpy.mean(power[self.piff(313)  :self.piff(625):1]))
+        matrix[3]= int(numpy.mean(power[self.piff(625)  :self.piff(1250):1]))
+        matrix[4]= int(numpy.mean(power[self.piff(1250) :self.piff(2500):1]))
+        matrix[5]= int(numpy.mean(power[self.piff(2500) :self.piff(5000):1]))
+        matrix[6]= int(numpy.mean(power[self.piff(5000) :self.piff(10000):1]))
+        matrix[7]= int(numpy.mean(power[self.piff(10000):self.piff(20000):1]))
+        # Tidy up column values for the LED matrix
+        #matrix=numpy.divide(numpy.multiply(matrix,weighting),1000000)
+        # Set floor at 0 and ceiling at 8 for LED matrix
+        #matrix=matrix.clip(0,MATRIX_H) 
+        return matrix
+
     def analyze_audio(self):
         if len(self.chunks) > 0:
             data = self.chunks.pop(0)
@@ -102,7 +129,8 @@ class MyWidget(QtGui.QWidget):
             if (beat):
                 self.beat_on()
                 QtCore.QTimer.singleShot(BEAT_TIME, self.beat_off)
-            
+            levels = self.calculate_levels(signal)
+            print levels
 
         if len(self.chunks) > 20:
             print "falling behind, %d chunks in queue"  % len(self.chunks)
