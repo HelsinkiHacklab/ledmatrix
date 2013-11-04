@@ -28,7 +28,7 @@ class SimpleBeatDetection:
     Simple beat detection algorithm from
     http://archive.gamedev.net/archive/reference/programming/features/beatdetection/index.html
     """
-    def __init__(self, history = 43): # 43 ought to be good default for 44100
+    def __init__(self, history = 43): # 43 ought to be good default for 44100 sample rate and 1024 sample chunk size
         self.local_energy = numpy.zeros(history) # a simple ring buffer
         self.local_energy_index = 0 # the index of the oldest element
 
@@ -41,6 +41,7 @@ class SimpleBeatDetection:
         local_energy_average = self.local_energy.mean()
         local_energy_variance = self.local_energy.var()
 
+        # TODO: Is that 1.15142857 the C the algorithm refers to  ??
         beat_sensibility = (-0.0025714 * local_energy_variance) + 1.15142857
         beat = instant_energy > beat_sensibility * local_energy_average
 
