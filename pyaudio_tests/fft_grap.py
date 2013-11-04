@@ -81,13 +81,13 @@ class MyWidget(QtGui.QWidget):
         self.beat_is_on = False
         self.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
 
-        self.audio_timer = QtCore.QTimer()
-        self.audio_timer.timeout.connect(self.read_audio)
-        self.audio_timer.start(0)
+        #self.audio_timer = QtCore.QTimer()
+        #self.audio_timer.timeout.connect(self.read_audio)
+        #self.audio_timer.start(0)
 
         self.analyze_timer = QtCore.QTimer()
         self.analyze_timer.timeout.connect(self.analyze_audio)
-        self.analyze_timer.start(0)
+        self.analyze_timer.start(5)
 
 
     def read_audio(self):
@@ -124,6 +124,7 @@ class MyWidget(QtGui.QWidget):
         return matrix
 
     def analyze_audio(self):
+        self.read_audio()
         if len(self.chunks) > 0:
             data = self.chunks.pop(0)
             signal = numpy.frombuffer(data, numpy.int16)
@@ -144,11 +145,12 @@ class MyWidget(QtGui.QWidget):
             self.imagearray.fill(255)
         else:
             self.imagearray.fill(0)
-        
-        for y in range(MATRIX_H*FFT_QT_SCALE):
-            for x in range(MATRIX_W*FFT_QT_SCALE):
-                if self.levels[x/FFT_QT_SCALE] >= y/FFT_QT_SCALE:
-                    self.imagearray[(MATRIX_H*FFT_QT_SCALE-1)-y][x] = (255,0,0)
+
+# This is way slow, figure out a better way        
+#        for y in range(MATRIX_H*FFT_QT_SCALE):
+#            for x in range(MATRIX_W*FFT_QT_SCALE):
+#                if self.levels[x/FFT_QT_SCALE] >= y/FFT_QT_SCALE:
+#                    self.imagearray[(MATRIX_H*FFT_QT_SCALE-1)-y][x] = (255,0,0)
 
         self.update_image()
 
