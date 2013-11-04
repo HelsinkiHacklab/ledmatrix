@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 import sys
 from PyQt4 import QtCore, QtGui
-#import Image
-import ImageQt
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageQt
 
 
 class MyWidget(QtGui.QWidget):
