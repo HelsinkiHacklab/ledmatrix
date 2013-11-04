@@ -73,10 +73,12 @@ class MyWidget(QtGui.QWidget):
         self.label = QtGui.QLabel('', self)
 
         self.imagearray = numpy.ndarray(shape=(self.canvasy,self.canvasx,3), dtype=numpy.uint8)
+        self.imagearray.fill(0)
         self.update_image()
 
         self.chunks = []
         self.beatdetector = SimpleBeatDetection()
+        self.beat_is_on = False
         self.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
 
         self.audio_timer = QtCore.QTimer()
@@ -88,18 +90,8 @@ class MyWidget(QtGui.QWidget):
         self.analyze_timer.start(0)
 
 
-    def beat_on(self):
-        #print "BEAT"
-        self.imagearray.fill(255)
-        self.update_image()
-
-    def beat_off(self):
-        self.imagearray.fill(0)
-        self.update_image()
-
     def read_audio(self):
         self.chunks.append(self.inStream.read(bufferSize))
-
 
     # Return power array index corresponding to a particular frequency
     def piff(self, val):
@@ -124,8 +116,9 @@ class MyWidget(QtGui.QWidget):
             matrix[x] = int(numpy.mean(power[self.piff(bin_start):self.piff(bin_end):1]))
             #print "bin %d from %d to %d power %f" % (x, bin_start, bin_end, matrix[x])
         # Tidy up column values for the LED matrix
-        print matrix
+        #print matrix
         matrix=numpy.divide(numpy.multiply(matrix,weighting),weighting_divider)
+        #print matrix
         # Set floor at 0 and ceiling at 8 for LED matrix
         matrix=matrix.clip(0,MATRIX_H) 
         return matrix
@@ -139,12 +132,33 @@ class MyWidget(QtGui.QWidget):
             if (beat):
                 self.beat_on()
                 QtCore.QTimer.singleShot(BEAT_TIME, self.beat_off)
-            levels = self.calculate_levels(signal)
-            print levels
+            self.levels = self.calculate_levels(signal)
+            self.draw_levels()
 
         if len(self.chunks) > 20:
             print "falling behind, %d chunks in queue"  % len(self.chunks)
+
+    def draw_levels(self):
+        # Start by filling according to beat
+        if self.beat_is_on:
+            self.imagearray.fill(255)
+        else:
+            self.imagearray.fill(0)
         
+        # TODO: draw the actual levels
+
+        self.update_image()
+
+    def beat_on(self):
+        self.beat_is_on = True
+        #self.imagearray.fill(255)
+        #self.update_image()
+
+    def beat_off(self):
+        self.beat_is_on = False
+        #self.imagearray.fill(0)
+        #self.update_image()
+
     def update_image(self):
         self.PilImage = Image.fromarray(self.imagearray)
         self.update_pixmap()
