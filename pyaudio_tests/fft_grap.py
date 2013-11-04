@@ -145,7 +145,10 @@ class MyWidget(QtGui.QWidget):
         else:
             self.imagearray.fill(0)
         
-        # TODO: draw the actual levels
+        for y in range(MATRIX_H*FFT_QT_SCALE):
+            for x in range(MATRIX_W*FFT_QT_SCALE):
+                if self.levels[x/FFT_QT_SCALE] >= y/FFT_QT_SCALE:
+                    self.imagearray[(MATRIX_H*FFT_QT_SCALE-1)-y][x] = (255,0,0)
 
         self.update_image()
 
