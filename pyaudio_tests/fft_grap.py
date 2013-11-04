@@ -69,7 +69,7 @@ class MyWidget(QtGui.QWidget):
         self.update_image()
 
         self.chunks = []
-        self.beats = SimpleBeatDetection()
+        self.beatdetector = SimpleBeatDetection()
         self.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
 
         self.audio_timer = QtCore.QTimer()
@@ -98,10 +98,11 @@ class MyWidget(QtGui.QWidget):
             data = self.chunks.pop(0)
             signal = numpy.frombuffer(data, numpy.int16)
             #print signal
-            beat = self.beats.detect_beat(signal)
+            beat = self.beatdetector.detect_beat(signal)
             if (beat):
                 self.beat_on()
                 QtCore.QTimer.singleShot(BEAT_TIME, self.beat_off)
+            
 
         if len(self.chunks) > 20:
             print "falling behind, %d chunks in queue"  % len(self.chunks)
