@@ -13,7 +13,15 @@ MATRIX_H=7
 FFT_QT_SCALE=10
 BEAT_TIME=10
 
-weighting = [2,2,8,8,16,32,64,64]
+weighting_divider = 64
+weighting = numpy.ndarray(shape=(MATRIX_W))
+weighting.fill(2)
+for x in range(MATRIX_W):
+    ex = int(x/2)
+    if ex < 1:
+        continue
+    weighting[x] = 2*ex
+#print weighting
 
 bufferSize=2**10
 sampleRate=44100 
@@ -95,7 +103,8 @@ class MyWidget(QtGui.QWidget):
 
     # Return power array index corresponding to a particular frequency
     def piff(self, val):
-        return int(2*bufferSize*val/sampleRate)
+        #return int(2*bufferSize*val/sampleRate)
+        return int(bufferSize*val/sampleRate)
     
     # Visualizing code from http://www.raspberrypi.org/phpBB3/viewtopic.php?p=314087
     def calculate_levels(self, signal):
@@ -106,18 +115,19 @@ class MyWidget(QtGui.QWidget):
         #fourier=numpy.delete(fourier,len(fourier)-1)
         # Find average 'amplitude' for specific frequency ranges in Hz
         power = numpy.abs(fourier)
-        matrix[0]= int(numpy.mean(power[self.piff(0)    :self.piff(156):1]))
-        matrix[1]= int(numpy.mean(power[self.piff(156)  :self.piff(313):1]))
-        matrix[2]= int(numpy.mean(power[self.piff(313)  :self.piff(625):1]))
-        matrix[3]= int(numpy.mean(power[self.piff(625)  :self.piff(1250):1]))
-        matrix[4]= int(numpy.mean(power[self.piff(1250) :self.piff(2500):1]))
-        matrix[5]= int(numpy.mean(power[self.piff(2500) :self.piff(5000):1]))
-        matrix[6]= int(numpy.mean(power[self.piff(5000) :self.piff(10000):1]))
-        matrix[7]= int(numpy.mean(power[self.piff(10000):self.piff(20000):1]))
+        maxfreq = sampleRate/2.0
+        bandwidth = maxfreq/MATRIX_W
+        for x in range(MATRIX_W):
+            bin_start = int(x*bandwidth)
+            bin_end = int((x+1)*bandwidth)
+            #print "bin %d from %d to %d" % (x, bin_start, bin_end)
+            matrix[x] = int(numpy.mean(power[self.piff(bin_start):self.piff(bin_end):1]))
+            #print "bin %d from %d to %d power %f" % (x, bin_start, bin_end, matrix[x])
         # Tidy up column values for the LED matrix
-        #matrix=numpy.divide(numpy.multiply(matrix,weighting),1000000)
+        print matrix
+        matrix=numpy.divide(numpy.multiply(matrix,weighting),weighting_divider)
         # Set floor at 0 and ceiling at 8 for LED matrix
-        #matrix=matrix.clip(0,MATRIX_H) 
+        matrix=matrix.clip(0,MATRIX_H) 
         return matrix
 
     def analyze_audio(self):
