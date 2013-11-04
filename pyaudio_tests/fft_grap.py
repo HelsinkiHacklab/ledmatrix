@@ -3,10 +3,7 @@ import sys,os
 import time
 
 import pyaudio
-import scipy
 import numpy
-import struct
-import scipy.fftpack
 import threading
 
 
