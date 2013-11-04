@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys,o
+import sys,os
 
 
 # Another small bit of boilerplate
