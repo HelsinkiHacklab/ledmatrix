@@ -21,6 +21,7 @@ for x in range(MATRIX_W):
     if ex < 1:
         continue
     weighting[x] = 2*ex
+weighting[0] = 0.5
 #print weighting
 
 bufferSize=2**10
