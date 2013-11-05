@@ -72,7 +72,7 @@ class MyWidget(QtGui.QWidget):
         self.setWindowTitle('%dx%d scaled by %d' % (MATRIX_W, MATRIX_H, FFT_QT_SCALE))
         self.label = QtGui.QLabel('', self)
 
-        self.imagearray = numpy.ndarray(shape=(self.canvasy,self.canvasx,3), dtype=numpy.uint8)
+        self.imagearray = numpy.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=numpy.uint8)
         self.imagearray.fill(0)
         self.update_image()
 
@@ -146,11 +146,10 @@ class MyWidget(QtGui.QWidget):
         else:
             self.imagearray.fill(0)
 
-# This is way slow, figure out a better way        
-#        for y in range(MATRIX_H*FFT_QT_SCALE):
-#            for x in range(MATRIX_W*FFT_QT_SCALE):
-#                if self.levels[x/FFT_QT_SCALE] >= y/FFT_QT_SCALE:
-#                    self.imagearray[(MATRIX_H*FFT_QT_SCALE-1)-y][x] = (255,0,0)
+        for y in range(MATRIX_H):
+            for x in range(MATRIX_W):
+                if self.levels[x] >= y:
+                    self.imagearray[(MATRIX_H-1)-y][x] = (255,0,0)
 
         self.update_image()
 
@@ -166,6 +165,7 @@ class MyWidget(QtGui.QWidget):
 
     def update_image(self):
         self.PilImage = Image.fromarray(self.imagearray)
+        self.PilImage = self.PilImage.resize((MATRIX_W*FFT_QT_SCALE, MATRIX_H*FFT_QT_SCALE), Image.BILINEAR)
         self.update_pixmap()
 
     def update_pixmap(self):
