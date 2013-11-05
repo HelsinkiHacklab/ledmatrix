@@ -26,6 +26,9 @@ weighting[0] = 0.5
 
 bufferSize=2**10
 sampleRate=44100 
+spectrogram_lowpass=50 # hz
+spectrogram_highpass=12000 # hz
+
 
 p = pyaudio.PyAudio()
 
@@ -133,12 +136,24 @@ class MyWidget(QtGui.QWidget):
         fftb = 10*numpy.log10(numpy.sqrt(fft.imag**2+fft.real**2))[:len(pcm)/2]
         freq = numpy.fft.fftfreq(numpy.arange(len(pcm)).shape[-1])[:len(pcm)/2]
         freq = freq*sampleRate #make the frequency scale
+
+        # There is probably a much better way but can't be bothered right now.        
+        while (freq[0] < spectrogram_lowpass):
+            # Drop frequency bins until we are above our cutoff
+            fftb = numpy.delete(fftb,0)
+            freq = numpy.delete(freq,0)
+        while (freq[-1] > spectrogram_highpass):
+            # Drop frequency bins until we are above our cutoff
+            fftb = numpy.delete(fftb,-1)
+            freq = numpy.delete(freq,-1)
+
         #print fftb
         #print freq
         fft_size = len(fftb)
         bin_size = float(fft_size/MATRIX_W)
         if (bin_size != int(bin_size)):
             # This case is probably not handled properly
+            #print "bin_size %f may be problematic" % bin_size
             pass
         for x in range(MATRIX_W):
             startidx = int(x*bin_size)
@@ -149,7 +164,7 @@ class MyWidget(QtGui.QWidget):
         #print binpower
         for x in range(MATRIX_W):
             # map to 0-7
-            binpower[x] = int(round(numpy.interp(binpower[x], [6,25],[-1,7])))
+            binpower[x] = int(round(numpy.interp(binpower[x], [6,30],[-1,7])))
         #print binpower
         return binpower
 
