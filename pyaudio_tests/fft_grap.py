@@ -100,7 +100,7 @@ class MyWidget(QtGui.QWidget):
         return int(bufferSize*val/sampleRate)
     
     # Visualizing code from http://www.raspberrypi.org/phpBB3/viewtopic.php?p=314087
-    def calculate_levels(self, signal):
+    def calculate_levels_old(self, signal):
         matrix =  numpy.ndarray(shape=(MATRIX_W))
         # Apply FFT - real data
         fourier=numpy.fft.rfft(signal)
@@ -123,6 +123,37 @@ class MyWidget(QtGui.QWidget):
         # Set floor at 0 and ceiling at 8 for LED matrix
         matrix=matrix.clip(0,MATRIX_H) 
         return matrix
+
+    def calculate_levels(self, pcm):
+        binpower =  numpy.ndarray(shape=(MATRIX_W))
+
+        fft = numpy.fft.fft(pcm)
+        fftr = 10*numpy.log10(abs(fft.real))[:len(pcm)/2]
+        ffti = 10*numpy.log10(abs(fft.imag))[:len(pcm)/2]
+        fftb = 10*numpy.log10(numpy.sqrt(fft.imag**2+fft.real**2))[:len(pcm)/2]
+        freq = numpy.fft.fftfreq(numpy.arange(len(pcm)).shape[-1])[:len(pcm)/2]
+        freq = freq*sampleRate #make the frequency scale
+        #print fftb
+        #print freq
+        fft_size = len(fftb)
+        bin_size = float(fft_size/MATRIX_W)
+        if (bin_size != int(bin_size)):
+            # This case is probably not handled properly
+            pass
+        for x in range(MATRIX_W):
+            startidx = int(x*bin_size)
+            endidx = int((x+1)*bin_size)
+            #print "slot %d data %s" % (x, fftb[startidx:endidx])
+            binpower[x] = numpy.mean(fftb[startidx:endidx])
+
+        #print binpower
+        for x in range(MATRIX_W):
+            # map to 0-7
+            binpower[x] = int(round(numpy.interp(binpower[x], [6,25],[-1,7])))
+        #print binpower
+        return binpower
+
+
 
     def analyze_audio(self):
         self.read_audio()
