@@ -13,12 +13,12 @@ stream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=False
 
 chirp_start_hz = 20.0
 chirp_end_hz = 1500.0
-chirp_time_s = 3
+chirp_time_s = 10
 
 # TODO: Probably should do multiple consecutive sweeps instead of calculating all this into memory in one go...
 sampletimes = numpy.linspace(0.0, chirp_time_s, chirp_time_s*sampleRate)
 chirpdata = scipy.signal.chirp(sampletimes, chirp_start_hz, chirp_time_s, chirp_end_hz)
-audio_chirp = numpy.interp(chirpdata, [-1.0, 1.0], [0, 2**16-1]).astype(numpy.uint16)
+audio_chirp = numpy.interp(chirpdata, [-1.0, 1.0], [-1*2**15, 2**15-1]).astype(numpy.int16)
 
 stream.write(audio_chirp)
 
