@@ -85,13 +85,15 @@ class MyWidget(QtGui.QWidget):
         self.beatdetector = SimpleBeatDetection()
         self.beat_is_on = False
 
-        #self.audio_timer = QtCore.QTimer()
-        #self.audio_timer.timeout.connect(self.read_audio)
-        #self.audio_timer.start(0)
+        # Read audio as fast as feasible (though the read method probably blocks so maybe this should be a separate thread, or better probably to switch to the callback version)
+        self.audio_timer = QtCore.QTimer()
+        self.audio_timer.timeout.connect(self.read_audio)
+        self.audio_timer.start(0)
 
+        # Analyze the audio data we got every X ms
         self.analyze_timer = QtCore.QTimer()
         self.analyze_timer.timeout.connect(self.analyze_audio)
-        self.analyze_timer.start(5)
+        self.analyze_timer.start(25)
 
 
     def read_audio(self):
@@ -172,7 +174,6 @@ class MyWidget(QtGui.QWidget):
 
 
     def analyze_audio(self):
-        self.read_audio()
         if len(self.chunks) > 0:
             data = self.chunks.pop(0)
             signal = numpy.frombuffer(data, numpy.int16)
