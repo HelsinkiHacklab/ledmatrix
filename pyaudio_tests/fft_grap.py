@@ -13,6 +13,7 @@ MATRIX_H=7
 FFT_QT_SCALE=10
 BEAT_TIME=10
 
+# This stuff is used by the older FFT to led bars code I lifted from RPI forums, will be removed
 weighting_divider = 64
 weighting = numpy.ndarray(shape=(MATRIX_W))
 weighting.fill(2)
@@ -24,11 +25,12 @@ for x in range(MATRIX_W):
 weighting[0] = 0.5
 #print weighting
 
+# Audio setup
 bufferSize=2**10
 sampleRate=44100 
+# low and high end of that we are interedted in visualizing.
 spectrogram_lowpass=50 # hz
 spectrogram_highpass=12000 # hz
-
 
 
 
@@ -147,6 +149,7 @@ class MyWidget(QtGui.QWidget):
 
         #print fftb
         #print freq
+        # TODO: Bin levels by octaves not linearly http://stackoverflow.com/questions/604453/analyze-audio-using-fast-fourier-transform
         fft_size = len(fftb)
         bin_size = float(fft_size/MATRIX_W)
         if (bin_size != int(bin_size)):
