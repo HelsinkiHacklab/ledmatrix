@@ -1,11 +1,11 @@
 #!/usr/bin/env python
+from __future__ import with_statement
 import sys,os
 import time
 from PyQt4 import QtCore, QtGui
 from PIL import Image, ImageOps, ImageQt
 import pyaudio
 import numpy
-
 
 # the 31x7 matrix...
 MATRIX_W=31
@@ -30,7 +30,6 @@ spectrogram_lowpass=50 # hz
 spectrogram_highpass=12000 # hz
 
 
-p = pyaudio.PyAudio()
 
 
 # From http://stackoverflow.com/questions/12344951/detect-beat-and-play-wav-file-in-a-syncronised-manner
@@ -83,7 +82,6 @@ class MyWidget(QtGui.QWidget):
         self.chunks = []
         self.beatdetector = SimpleBeatDetection()
         self.beat_is_on = False
-        self.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
 
         #self.audio_timer = QtCore.QTimer()
         #self.audio_timer.timeout.connect(self.read_audio)
@@ -229,5 +227,9 @@ class MyWidget(QtGui.QWidget):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myWidget = MyWidget()
+    p = pyaudio.PyAudio()
+    myWidget.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
     myWidget.show()
     sys.exit(app.exec_())
+
+    
