@@ -8,8 +8,8 @@ from scipy.io.wavfile import write
 sampleRate=44100
 
 chirp_start_hz = 50.0
-chirp_end_hz = 7000.0
-chirp_time_s = 10.0
+chirp_end_hz = 15000.0
+chirp_time_s = 15.0
 
 sampletimes = numpy.linspace(0.0, chirp_time_s, chirp_time_s*sampleRate)
 chirpdata = scipy.signal.chirp(sampletimes, chirp_start_hz, chirp_time_s, chirp_end_hz)
