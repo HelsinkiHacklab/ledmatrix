@@ -183,6 +183,22 @@ So let's compile one, if your linux is Ubuntu you can save some downloading by `
 You can now boot the board with the new kernel, `./echotest.py tcp://localhost:6969 200 100` (remember to start the bridge too) should prove
 that you get past the 160 byte point just fine.
 
+## Geting GPIO to work
+
+The GPIO pins are in wrong MUX mode, to fix it do the following (after finding out the signal name from the reference manual, the signal name is the mode0 name), we use GPIO144 aka UART2_CTS (ie pin4) as the example
+
+    # Mount the debug filesystem (it's not by default)
+    mount -t debugfs none /sys/kernel/debug
+    # Set pin to output
+    echo 0x104 > /sys/kernel/debug/omap_mux/uart2_cts
+    # Export the GPIO
+    echo 144 > /sys/class/gpio/export
+    # Set direction
+    echo out > /sys/class/gpio/gpio144/direction
+    # set value
+    echo 0 >/sys/class/gpio/gpio144/value
+
+
 ## Notes about RealTek/Ralink USB WiFi adapters
 
 Not really in scope of the title this document but I need to write this down
