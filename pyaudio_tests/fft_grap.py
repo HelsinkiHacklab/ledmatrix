@@ -93,7 +93,7 @@ class MyWidget(QtGui.QWidget):
         # Analyze the audio data we got every X ms
         self.analyze_timer = QtCore.QTimer()
         self.analyze_timer.timeout.connect(self.analyze_audio)
-        self.analyze_timer.start(25)
+        self.analyze_timer.start(5)
 
 
     def read_audio(self):
