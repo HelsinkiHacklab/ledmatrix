@@ -185,6 +185,8 @@ that you get past the 160 byte point just fine.
 
 ## Geting GPIO to work
 
+**NOTE:** This is theory for now, I did not actually get this working yet, expect updates.
+
 The GPIO pins are in wrong MUX mode, to fix it do the following (after finding out the signal name from the reference manual, the signal name is the mode0 name), we use GPIO144 aka UART2_CTS (ie pin4) as the example
 
     # Mount the debug filesystem (it's not by default)
