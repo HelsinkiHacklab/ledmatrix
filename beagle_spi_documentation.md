@@ -183,23 +183,50 @@ So let's compile one, if your linux is Ubuntu you can save some downloading by `
 You can now boot the board with the new kernel, `./echotest.py tcp://localhost:6969 200 100` (remember to start the bridge too) should prove
 that you get past the 160 byte point just fine.
 
-## Geting GPIO to work
+## Using GPIO
 
-**NOTE:** This is theory for now, I did not actually get this working yet, expect updates.
+The general theory (this is simply commands in your shell, Google for the correct way to do this using filehandles):
 
-The GPIO pins are in wrong MUX mode, to fix it do the following (after finding out the signal name from the reference manual, the signal name is the mode0 name), we use GPIO144 aka UART2_CTS (ie pin4) as the example
+    # Export the GPIO
+    echo 157 > /sys/class/gpio/export
+    # Set direction
+    echo out > /sys/class/gpio/gpio157/direction
+    # set value
+    echo 0 >/sys/class/gpio/gpio157/value
+
+Some pins might be in wrong PINMUX mode (probably for a reason, be carefull before changing the mode).
+
+Checking the GPIO header PINMUX values (pins 2-24 inclusive, in order):
 
     # Mount the debug filesystem (it's not by default)
     mount -t debugfs none /sys/kernel/debug
-    # Set pin to output
-    echo 0x104 > /sys/kernel/debug/omap_mux/uart2_cts
-    # Export the GPIO
-    echo 144 > /sys/class/gpio/export
-    # Set direction
-    echo out > /sys/class/gpio/gpio144/direction
-    # set value
-    echo 0 >/sys/class/gpio/gpio144/value
+    # Then check the PINMUXen
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat7
+    cat /sys/kernel/debug/omap_mux/uart2_cts
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat6
+    cat /sys/kernel/debug/omap_mux/uart2_tx
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat5
+    cat /sys/kernel/debug/omap_mux/mcbsp3_fsx
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat4
+    cat /sys/kernel/debug/omap_mux/uart2_rts
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat3
+    cat /sys/kernel/debug/omap_mux/mcbsp1_dx
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat2
+    cat /sys/kernel/debug/omap_mux/mcbsp1_clkx
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat1
+    cat /sys/kernel/debug/omap_mux/mcbsp1_fsx
+    cat /sys/kernel/debug/omap_mux/sdmmc2_dat0
+    cat /sys/kernel/debug/omap_mux/mcbsp1_dr
+    cat /sys/kernel/debug/omap_mux/sdmmc2_cmd
+    cat /sys/kernel/debug/omap_mux/mcbsp1_clkr
+    cat /sys/kernel/debug/omap_mux/sdmmc2_clk
+    cat /sys/kernel/debug/omap_mux/mcbsp1_fsr
+    cat /sys/kernel/debug/omap_mux/i2c2_sda
+    cat /sys/kernel/debug/omap_mux/i2c2_scl
 
+For GPIO use of pin you want it to be in MODE4, this can be set with
+
+    echo 0x004 >/sys/kernel/debug/omap_mux/muxname
 
 ## Notes about RealTek/Ralink USB WiFi adapters
 
