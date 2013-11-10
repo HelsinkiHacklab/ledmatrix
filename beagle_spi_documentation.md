@@ -185,7 +185,7 @@ that you get past the 160 byte point just fine.
 
 ## Using GPIO
 
-The general theory (this is simply commands in your shell, Google for the correct way to do this using filehandles):
+The general theory (this is simply commands in your shell, Google for the correct way to do this using filehandles in your program):
 
     # Export the GPIO
     echo 157 > /sys/class/gpio/export
