@@ -95,7 +95,12 @@ class MyWidget(QtGui.QWidget):
         # Analyze the audio data we got every X ms
         self.analyze_timer = QtCore.QTimer()
         self.analyze_timer.timeout.connect(self.analyze_audio)
-        self.analyze_timer.start(5)
+        self.analyze_timer.start(0)
+
+        # Update the matrix every X ms
+        self.update_matrix_timer = QtCore.QTimer()
+        self.update_matrix_timer.timeout.connect(self.update_matrix)
+        self.update_matrix_timer.start(20)
 
 
     def read_audio(self):
@@ -202,7 +207,6 @@ class MyWidget(QtGui.QWidget):
                 if self.levels[x] >= y:
                     self.imagearray[(MATRIX_H-1)-y][x] = (255,0,0)
 
-        self.update_matrix()
         self.update_image()
 
     def beat_on(self):
