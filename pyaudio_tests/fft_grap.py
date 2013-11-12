@@ -181,6 +181,9 @@ class MyWidget(QtGui.QWidget):
 
 
     def analyze_audio(self):
+        if len(self.chunks) > 20:
+            print "falling behind, %d chunks in queue"  % len(self.chunks)
+
         if len(self.chunks) > 0:
             data = self.chunks.pop(0)
             signal = numpy.frombuffer(data, numpy.int16)
@@ -192,8 +195,6 @@ class MyWidget(QtGui.QWidget):
             self.levels = self.calculate_levels(signal)
             self.draw_levels()
 
-        if len(self.chunks) > 20:
-            print "falling behind, %d chunks in queue"  % len(self.chunks)
 
     def draw_levels(self):
         # Start by filling according to beat
