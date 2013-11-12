@@ -228,6 +228,18 @@ For GPIO use of pin you want it to be in MODE4, this can be set with
 
     echo 0x004 >/sys/kernel/debug/omap_mux/muxname
 
+A simple shell script I put on the device as `/urs/local/bin/gpio_output`
+
+    #!/bin/bash 
+    pinctl="/sys/class/gpio/gpio"$1
+    if [ ! -d $pinctl ]; then
+        echo $1 >/sys/class/gpio/export
+    fi
+    echo out >$pinctl/direction
+    echo $2 >$pinctl/value
+
+Then you can simply run `gpio_output gpio_number state` where gpio_number is 157 for our example above and value either 0 or 1.
+
 ## Notes about RealTek/Ralink USB WiFi adapters
 
 Not really in scope of the title this document but I need to write this down
