@@ -181,7 +181,7 @@ class MyWidget(QtGui.QWidget):
 
 
     def analyze_audio(self):
-        if len(self.chunks) > 20:
+        if len(self.chunks) > 5:
             print "falling behind, %d chunks in queue"  % len(self.chunks)
 
         if len(self.chunks) > 0:
