@@ -70,6 +70,7 @@ class MyWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         
+        self.zmq_socket = None
         self.canvasx = MATRIX_W*FFT_QT_SCALE
         self.canvasy = MATRIX_H*FFT_QT_SCALE
 
@@ -78,6 +79,7 @@ class MyWidget(QtGui.QWidget):
         self.label = QtGui.QLabel('', self)
 
         self.imagearray = numpy.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=numpy.uint8)
+        self.imagearray_switched = numpy.ndarray(shape=(MATRIX_H,MATRIX_W,3), dtype=numpy.uint8)
         self.imagearray.fill(0)
         self.update_image()
 
@@ -200,6 +202,7 @@ class MyWidget(QtGui.QWidget):
                 if self.levels[x] >= y:
                     self.imagearray[(MATRIX_H-1)-y][x] = (255,0,0)
 
+        self.update_matrix()
         self.update_image()
 
     def beat_on(self):
@@ -211,6 +214,20 @@ class MyWidget(QtGui.QWidget):
         self.beat_is_on = False
         #self.imagearray.fill(0)
         #self.update_image()
+
+    def update_matrix(self):
+        if not self.zmq_socket:
+            return
+        # Switch the lines that need switching
+        for i in range(len(self.imagearray)):
+            if ((i % 2) == 0):
+                self.imagearray_switched[i] = self.imagearray[i][::-1]
+            else:
+                self.imagearray_switched[i] = self.imagearray[i]
+        # and output
+        self.zmq_socket.send(self.imagearray_switched.flatten())
+        # and read the response so that the REPL transactions work correctly
+        rpl = socket.recv()
 
     def update_image(self):
         self.PilImage = Image.fromarray(self.imagearray)
@@ -233,6 +250,13 @@ if __name__ == '__main__':
     myWidget = MyWidget()
     p = pyaudio.PyAudio()
     myWidget.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
+    if len(sys.argv) > 1:
+        import zmq
+        context = zmq.Context()
+        socket = context.socket(zmq.REQ)
+        socket.connect(sys.argv[1])
+        myWidget.zmq_socket = socket
+
     myWidget.show()
     sys.exit(app.exec_())
 
