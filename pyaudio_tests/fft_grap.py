@@ -220,6 +220,7 @@ class MyWidget(QtGui.QWidget):
         #self.imagearray.fill(0)
         #self.update_image()
 
+
     def update_matrix(self):
         if not self.zmq_socket:
             return
@@ -231,8 +232,8 @@ class MyWidget(QtGui.QWidget):
                 self.imagearray_switched[i] = self.imagearray[i]
         # and output
         self.zmq_socket.send(self.imagearray_switched.flatten())
-        # and read the response so that the REPL transactions work correctly
-        rpl = socket.recv()
+        # We have to get the reply even if we do not care about it
+        self.zmq_socket.recv()
 
     def update_image(self):
         self.PilImage = Image.fromarray(self.imagearray)
