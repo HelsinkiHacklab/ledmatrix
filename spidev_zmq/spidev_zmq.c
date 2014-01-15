@@ -41,7 +41,6 @@ static int s_interrupted = 0;
 static void s_signal_handler (int signal_value)
 {
     s_interrupted = 1;
-    goto INTERRUPTED;
 }
 
 static void s_catch_signals (void)
@@ -304,7 +303,6 @@ int main(int argc, char *argv[])
         // Check for interrup codes
         if (s_interrupted)
         {
-            INTERRUPTED:
             if (verbose)
             {
                 printf("W: interrupt received, killing server...\n");
@@ -314,7 +312,7 @@ int main(int argc, char *argv[])
 
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
-        size = zmq_msg_recv(&recv_msg, zmq_responder, 0);
+        size = zmq_msg_recv(&recv_msg, zmq_responder, ZMQ_DONTWAIT);
         if (size == -1)
         {
             // Error when receiving
