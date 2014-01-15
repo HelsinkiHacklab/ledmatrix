@@ -314,7 +314,7 @@ int main(int argc, char *argv[])
 
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
-        size = zmq_msg_recv(&recv_msg, zmq_responder);
+        size = zmq_msg_recv(&recv_msg, zmq_responder, 0);
         if (size == -1)
         {
             // Error when receiving
