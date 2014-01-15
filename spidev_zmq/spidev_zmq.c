@@ -41,6 +41,7 @@ static int s_interrupted = 0;
 static void s_signal_handler (int signal_value)
 {
     s_interrupted = 1;
+    goto INTERRUPTED;
 }
 
 static void s_catch_signals (void)
@@ -75,7 +76,7 @@ char *new_zmq_connect_str;
 static uint8_t quiet;
 static uint8_t verbose;
 // CPU usage
-static uint16_t yield_usec = 10;
+static uint16_t yield_usec = 0;
 
 
 static void print_usage(const char *prog)
@@ -96,7 +97,7 @@ static void print_usage(const char *prog)
          "  -S --socket   ZMQ socket definition (default tpc://*:6969)\n"
          "  -q --quiet    be quiet\n"
          "  -v --verbose  be verbose\n"
-         "  -y --yield    How much to usleep if there's nothign to do (default 10)\n"
+         "  -y --yield    How much to usleep if there's nothign to do (default 0)\n"
     );
     exit(1);
 }
@@ -297,10 +298,13 @@ int main(int argc, char *argv[])
     s_catch_signals ();
 
     int transfer_ret;
+    int size;
     while (1)
     {
         // Check for interrup codes
-        if (s_interrupted) {
+        if (s_interrupted)
+        {
+            INTERRUPTED:
             if (verbose)
             {
                 printf("W: interrupt received, killing server...\n");
@@ -310,7 +314,7 @@ int main(int argc, char *argv[])
 
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
-        int size = zmq_msg_recv(&recv_msg, zmq_responder, ZMQ_DONTWAIT);
+        size = zmq_msg_recv(&recv_msg, zmq_responder);
         if (size == -1)
         {
             // Error when receiving
@@ -318,10 +322,7 @@ int main(int argc, char *argv[])
             if (zmq_errno() == EAGAIN)
             {
                 // Yield a bit
-                if (yield_usec)
-                {
-                    usleep(yield_usec);
-                }
+                usleep(yield_usec);
                 continue;
             }
             perror("Error from zmq_msg_recv");
