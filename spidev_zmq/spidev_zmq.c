@@ -312,11 +312,16 @@ int main(int argc, char *argv[])
 
         zmq_msg_t recv_msg;
         zmq_msg_init(&recv_msg);
-        size = zmq_msg_recv(&recv_msg, zmq_responder, ZMQ_DONTWAIT);
+        //size = zmq_msg_recv(&recv_msg, zmq_responder, ZMQ_DONTWAIT);
+        size = zmq_msg_recv(&recv_msg, zmq_responder, 0);
         if (size == -1)
         {
             // Error when receiving
             zmq_msg_close(&recv_msg);
+            if (zmq_errno() == EINTR)
+            {
+                continue;
+            }
             if (zmq_errno() == EAGAIN)
             {
                 // Yield a bit
