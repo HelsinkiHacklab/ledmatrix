@@ -1584,12 +1584,12 @@ design rules under a new name.</description>
 <element name="C8" library="rcl" package="C0603K" value="" x="41.5925" y="9.525" smashed="yes" rot="R270">
 <attribute name="VALUE" x="39.9425" y="10.325" size="1.016" layer="27" rot="R270"/>
 </element>
-<element name="SJ1" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="11.43" y="10.16"/>
-<element name="SJ2" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="24.13" y="5.08"/>
-<element name="SJ3" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="36.83" y="5.08"/>
-<element name="SJ4" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="36.83" y="10.16"/>
-<element name="SJ5" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="24.13" y="10.16"/>
-<element name="SJ6" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="11.43" y="5.08"/>
+<element name="SJ1" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="11.43" y="10.16" smashed="yes"/>
+<element name="SJ2" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="24.13" y="5.08" smashed="yes"/>
+<element name="SJ3" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="36.83" y="5.08" smashed="yes"/>
+<element name="SJ4" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="36.83" y="10.16" smashed="yes"/>
+<element name="SJ5" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="24.13" y="10.16" smashed="yes"/>
+<element name="SJ6" library="SparkFun-Passives" package="SJ_2S-TRACE" value="SOLDERJUMPERTRACE" x="11.43" y="5.08" smashed="yes"/>
 </elements>
 <signals>
 <signal name="GND">
@@ -1640,7 +1640,11 @@ design rules under a new name.</description>
 <wire x1="1.3716" y1="10.2108" x2="1.3716" y2="10.3632" width="0.254" layer="1"/>
 <wire x1="3.3528" y1="10.3632" x2="3.4925" y2="10.4" width="0.254" layer="1"/>
 <wire x1="1.3716" y1="10.2108" x2="1.27" y2="10.16" width="0.254" layer="1"/>
-<wire x1="5.035" y1="10.5378" x2="10.922" y2="10.16" width="0" layer="19" extent="1-1"/>
+<wire x1="10.922" y1="10.16" x2="10.63625" y2="10.16" width="0.254" layer="1"/>
+<wire x1="10.63625" y1="10.16" x2="9.68375" y2="9.2075" width="0.254" layer="1"/>
+<wire x1="9.68375" y1="9.2075" x2="5.0546" y2="9.2075" width="0.254" layer="1"/>
+<wire x1="5.0546" y1="9.2075" x2="5.0546" y2="10.4928" width="0.254" layer="1"/>
+<wire x1="5.0546" y1="10.4928" x2="5.035" y2="10.5378" width="0.254" layer="1"/>
 </signal>
 <signal name="VL_SHIFT1">
 <contactref element="SHIFT1" pad="1"/>
@@ -1805,8 +1809,8 @@ design rules under a new name.</description>
 <wire x1="14.0208" y1="5.0292" x2="14.0208" y2="4.8768" width="0.254" layer="1"/>
 <wire x1="16.1544" y1="4.8768" x2="16.1925" y2="4.84" width="0.254" layer="1"/>
 <wire x1="14.0208" y1="5.0292" x2="13.97" y2="5.08" width="0.254" layer="1"/>
-<wire x1="17.735" y1="4.7022" x2="23.622" y2="5.08" width="0" layer="19" extent="1-1"/>
 <wire x1="13.97" y1="5.08" x2="11.938" y2="5.08" width="0.254" layer="1"/>
+<wire x1="17.735" y1="4.7022" x2="23.622" y2="5.08" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC_SHIFT2">
 <contactref element="SHIFT2" pad="14"/>
@@ -1821,8 +1825,12 @@ design rules under a new name.</description>
 <wire x1="14.0208" y1="10.2108" x2="14.0208" y2="10.3632" width="0.254" layer="1"/>
 <wire x1="16.1544" y1="10.3632" x2="16.1925" y2="10.4" width="0.254" layer="1"/>
 <wire x1="14.0208" y1="10.2108" x2="13.97" y2="10.16" width="0.254" layer="1"/>
-<wire x1="17.735" y1="10.5378" x2="23.622" y2="10.16" width="0" layer="19" extent="1-1"/>
 <wire x1="13.97" y1="10.16" x2="11.938" y2="10.16" width="0.254" layer="1"/>
+<wire x1="23.622" y1="10.16" x2="23.33625" y2="10.16" width="0.254" layer="1"/>
+<wire x1="23.33625" y1="10.16" x2="22.38375" y2="9.2075" width="0.254" layer="1"/>
+<wire x1="22.38375" y1="9.2075" x2="17.7546" y2="9.2075" width="0.254" layer="1"/>
+<wire x1="17.7546" y1="9.2075" x2="17.7546" y2="10.4674" width="0.254" layer="1"/>
+<wire x1="17.7546" y1="10.4674" x2="17.735" y2="10.5378" width="0.254" layer="1"/>
 </signal>
 <signal name="IOVCC4_SHIFT3">
 <contactref element="SHIFT3" pad="10"/>
@@ -1905,8 +1913,8 @@ design rules under a new name.</description>
 <wire x1="26.67" y1="5.0292" x2="26.67" y2="4.8768" width="0.254" layer="1"/>
 <wire x1="28.8036" y1="4.8768" x2="28.8925" y2="4.84" width="0.254" layer="1"/>
 <wire x1="26.67" y1="5.0292" x2="26.67" y2="5.08" width="0.254" layer="1"/>
-<wire x1="30.435" y1="4.7022" x2="36.322" y2="5.08" width="0" layer="19" extent="1-1"/>
 <wire x1="26.67" y1="5.08" x2="24.638" y2="5.08" width="0.254" layer="1"/>
+<wire x1="30.435" y1="4.7022" x2="36.322" y2="5.08" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC_SHIFT3">
 <contactref element="SHIFT3" pad="14"/>
@@ -1918,12 +1926,16 @@ design rules under a new name.</description>
 <wire x1="30.3276" y1="10.5156" x2="30.435" y2="10.5378" width="0.254" layer="1"/>
 <wire x1="28.956" y1="10.5156" x2="28.8925" y2="10.4" width="0.254" layer="1"/>
 <wire x1="24.638" y1="10.3632" x2="24.638" y2="10.16" width="0.254" layer="1"/>
-<wire x1="30.435" y1="10.5378" x2="36.322" y2="10.16" width="0" layer="19" extent="1-1"/>
 <wire x1="24.638" y1="10.16" x2="26.67" y2="10.16" width="0.254" layer="1"/>
 <wire x1="26.67" y1="10.16" x2="26.797" y2="10.16" width="0.254" layer="1"/>
 <wire x1="26.797" y1="10.16" x2="26.797" y2="10.4394" width="0.254" layer="1"/>
 <wire x1="26.797" y1="10.4394" x2="28.8925" y2="10.4394" width="0.254" layer="1"/>
 <wire x1="28.8925" y1="10.4394" x2="28.8925" y2="10.4" width="0.254" layer="1"/>
+<wire x1="36.322" y1="10.16" x2="36.03625" y2="10.16" width="0.254" layer="1"/>
+<wire x1="36.03625" y1="10.16" x2="35.08375" y2="9.2075" width="0.254" layer="1"/>
+<wire x1="35.08375" y1="9.2075" x2="30.4546" y2="9.2075" width="0.254" layer="1"/>
+<wire x1="30.4546" y1="9.2075" x2="30.4546" y2="10.5182" width="0.254" layer="1"/>
+<wire x1="30.4546" y1="10.5182" x2="30.435" y2="10.5378" width="0.254" layer="1"/>
 </signal>
 <signal name="IOVCC4_SHIFT4">
 <contactref element="SHIFT4" pad="10"/>
