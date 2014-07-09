@@ -511,6 +511,13 @@ MAX3377E has 230kbps max speed</description>
 <part name="PWR_SHIFT1" library="pinhead" deviceset="PINHD-1X3" device=""/>
 <part name="IOVCC_SHIFT1" library="pinhead" deviceset="PINHD-1X4" device=""/>
 <part name="IOVL_SHIFT1" library="pinhead" deviceset="PINHD-1X4" device=""/>
+<part name="SHIFT2" library="max33xxE_lvl_shifters" deviceset="MAX3378E" device=""/>
+<part name="GND2" library="supply1" deviceset="GND" device=""/>
+<part name="P+2" library="supply1" deviceset="+5V" device=""/>
+<part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
+<part name="PWR_SHIFT2" library="pinhead" deviceset="PINHD-1X3" device=""/>
+<part name="IOVCC_SHIFT2" library="pinhead" deviceset="PINHD-1X4" device=""/>
+<part name="IOVL_SHIFT2" library="pinhead" deviceset="PINHD-1X4" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -524,6 +531,13 @@ MAX3377E has 230kbps max speed</description>
 <instance part="PWR_SHIFT1" gate="A" x="73.66" y="20.32"/>
 <instance part="IOVCC_SHIFT1" gate="A" x="73.66" y="40.64"/>
 <instance part="IOVL_SHIFT1" gate="A" x="73.66" y="60.96"/>
+<instance part="SHIFT2" gate="G$1" x="129.54" y="43.18"/>
+<instance part="GND2" gate="1" x="129.54" y="22.86"/>
+<instance part="P+2" gate="1" x="132.08" y="66.04"/>
+<instance part="+3V2" gate="G$1" x="127" y="66.04"/>
+<instance part="PWR_SHIFT2" gate="A" x="170.18" y="63.5"/>
+<instance part="IOVCC_SHIFT2" gate="A" x="170.18" y="40.64"/>
+<instance part="IOVL_SHIFT2" gate="A" x="170.18" y="78.74"/>
 </instances>
 <busses>
 </busses>
@@ -538,6 +552,16 @@ MAX3377E has 230kbps max speed</description>
 <pinref part="PWR_SHIFT1" gate="A" pin="2"/>
 <wire x1="71.12" y1="20.32" x2="63.5" y2="20.32" width="0.1524" layer="91"/>
 <label x="66.04" y="20.32" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="GND"/>
+<pinref part="GND2" gate="1" pin="GND"/>
+<wire x1="129.54" y1="25.4" x2="129.54" y2="27.94" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="PWR_SHIFT2" gate="A" pin="2"/>
+<wire x1="167.64" y1="63.5" x2="160.02" y2="63.5" width="0.1524" layer="91"/>
+<label x="152.4" y="63.5" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VCC_SHIFT1" class="0">
@@ -638,6 +662,105 @@ MAX3377E has 230kbps max speed</description>
 <pinref part="IOVL_SHIFT1" gate="A" pin="1"/>
 <wire x1="71.12" y1="66.04" x2="63.5" y2="66.04" width="0.1524" layer="91"/>
 <label x="45.72" y="66.04" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IOVCC4_SHIFT2" class="0">
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="IOVCC4"/>
+<pinref part="IOVCC_SHIFT2" gate="A" pin="4"/>
+<wire x1="144.78" y1="38.1" x2="167.64" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVCC3_SHIFT2" class="0">
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="IOVCC3"/>
+<pinref part="IOVCC_SHIFT2" gate="A" pin="3"/>
+<wire x1="144.78" y1="40.64" x2="167.64" y2="40.64" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVCC2_SHIFT2" class="0">
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="IOVCC2"/>
+<pinref part="IOVCC_SHIFT2" gate="A" pin="2"/>
+<wire x1="144.78" y1="43.18" x2="167.64" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVCC1_SHIFT2" class="0">
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="IOVCC1"/>
+<pinref part="IOVCC_SHIFT2" gate="A" pin="1"/>
+<wire x1="144.78" y1="45.72" x2="167.64" y2="45.72" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVL2_SHIFT2" class="0">
+<segment>
+<pinref part="IOVL_SHIFT2" gate="A" pin="2"/>
+<wire x1="167.64" y1="81.28" x2="160.02" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="81.28" x2="104.14" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="81.28" x2="104.14" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="SHIFT2" gate="G$1" pin="IOVL2"/>
+<wire x1="114.3" y1="43.18" x2="106.68" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="43.18" x2="106.68" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVL1_SHIFT2" class="0">
+<segment>
+<pinref part="IOVL_SHIFT2" gate="A" pin="1"/>
+<wire x1="167.64" y1="83.82" x2="160.02" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="SHIFT2" gate="G$1" pin="IOVL1"/>
+<wire x1="114.3" y1="45.72" x2="106.68" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="83.82" x2="106.68" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="83.82" x2="106.68" y2="45.72" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVL3_SHIFT2" class="0">
+<segment>
+<pinref part="IOVL_SHIFT2" gate="A" pin="3"/>
+<wire x1="167.64" y1="78.74" x2="160.02" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="78.74" x2="101.6" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="78.74" x2="101.6" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="SHIFT2" gate="G$1" pin="IOVL3"/>
+<wire x1="114.3" y1="40.64" x2="106.68" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="40.64" x2="106.68" y2="40.64" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="IOVL4_SHIFT2" class="0">
+<segment>
+<pinref part="IOVL_SHIFT2" gate="A" pin="4"/>
+<wire x1="167.64" y1="76.2" x2="160.02" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="76.2" x2="99.06" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="76.2" x2="99.06" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="SHIFT2" gate="G$1" pin="IOVL4"/>
+<wire x1="114.3" y1="38.1" x2="106.68" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="38.1" x2="106.68" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="VL_SHIFT2" class="0">
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="VL"/>
+<pinref part="+3V2" gate="G$1" pin="+3V3"/>
+<wire x1="127" y1="63.5" x2="127" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="PWR_SHIFT2" gate="A" pin="3"/>
+<wire x1="167.64" y1="60.96" x2="160.02" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="60.96" x2="149.86" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="60.96" x2="149.86" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="68.58" x2="124.46" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="68.58" x2="124.46" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="60.96" x2="127" y2="60.96" width="0.1524" layer="91"/>
+<junction x="127" y="60.96"/>
+</segment>
+</net>
+<net name="VCC_SHIFT2" class="0">
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="VCC"/>
+<pinref part="P+2" gate="1" pin="+5V"/>
+<wire x1="132.08" y1="63.5" x2="132.08" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="PWR_SHIFT2" gate="A" pin="1"/>
+<wire x1="167.64" y1="66.04" x2="160.02" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="66.04" x2="137.16" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="66.04" x2="137.16" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="60.96" x2="132.08" y2="60.96" width="0.1524" layer="91"/>
+<junction x="132.08" y="60.96"/>
 </segment>
 </net>
 </nets>
