@@ -163,9 +163,10 @@ Think Shrink Small Outline Package 14 pins</description>
 </symbols>
 <devicesets>
 <deviceset name="MAX3378E">
-<description>MAX3378E Bi-directional 4-bit low-voltage level translator
+<description>MAX3378E/MAX3377E Bi-directional 4-bit low-voltage level translator
 
-8Mbps max speed.</description>
+MAX3378E has 8Mbps max speed.
+MAX3377E has 230kbps max speed</description>
 <gates>
 <gate name="G$1" symbol="4BITBIDIR" x="0" y="0"/>
 </gates>
