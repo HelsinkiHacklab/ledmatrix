@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="1" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="12.5" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -1658,7 +1658,9 @@ design rules under a new name.</description>
 <wire x1="1.3716" y1="5.0292" x2="1.3716" y2="4.8768" width="0.254" layer="1"/>
 <wire x1="3.3528" y1="4.8768" x2="3.4925" y2="4.84" width="0.254" layer="1"/>
 <wire x1="1.3716" y1="5.0292" x2="1.27" y2="5.08" width="0.254" layer="1"/>
-<wire x1="5.035" y1="4.7022" x2="10.922" y2="5.08" width="0" layer="19" extent="1-1"/>
+<via x="10.4775" y="5.08" extent="1-16" drill="0.6096"/>
+<wire x1="10.4775" y1="5.08" x2="1.27" y2="5.08" width="0.254" layer="16"/>
+<wire x1="10.4775" y1="5.08" x2="10.922" y2="5.08" width="0.254" layer="1"/>
 </signal>
 <signal name="IOVL2_SHIFT1">
 <contactref element="SHIFT1" pad="3"/>
@@ -1810,7 +1812,9 @@ design rules under a new name.</description>
 <wire x1="16.1544" y1="4.8768" x2="16.1925" y2="4.84" width="0.254" layer="1"/>
 <wire x1="14.0208" y1="5.0292" x2="13.97" y2="5.08" width="0.254" layer="1"/>
 <wire x1="13.97" y1="5.08" x2="11.938" y2="5.08" width="0.254" layer="1"/>
-<wire x1="17.735" y1="4.7022" x2="23.622" y2="5.08" width="0" layer="19" extent="1-1"/>
+<via x="23.1775" y="5.08" extent="1-16" drill="0.6096"/>
+<wire x1="23.1775" y1="5.08" x2="13.97" y2="5.08" width="0.254" layer="16"/>
+<wire x1="23.1775" y1="5.08" x2="23.622" y2="5.08" width="0.254" layer="1"/>
 </signal>
 <signal name="VCC_SHIFT2">
 <contactref element="SHIFT2" pad="14"/>
@@ -1914,7 +1918,9 @@ design rules under a new name.</description>
 <wire x1="28.8036" y1="4.8768" x2="28.8925" y2="4.84" width="0.254" layer="1"/>
 <wire x1="26.67" y1="5.0292" x2="26.67" y2="5.08" width="0.254" layer="1"/>
 <wire x1="26.67" y1="5.08" x2="24.638" y2="5.08" width="0.254" layer="1"/>
-<wire x1="30.435" y1="4.7022" x2="36.322" y2="5.08" width="0" layer="19" extent="1-1"/>
+<via x="35.8775" y="5.08" extent="1-16" drill="0.6096"/>
+<wire x1="35.8775" y1="5.08" x2="26.67" y2="5.08" width="0.254" layer="16"/>
+<wire x1="35.8775" y1="5.08" x2="36.322" y2="5.08" width="0.254" layer="1"/>
 </signal>
 <signal name="VCC_SHIFT3">
 <contactref element="SHIFT3" pad="14"/>
