@@ -4193,18 +4193,6 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </net>
 <net name="VCC_SHIFT1" class="0">
 <segment>
-<pinref part="SHIFT1" gate="G$1" pin="VCC"/>
-<pinref part="P+1" gate="1" pin="+5V"/>
-<wire x1="35.56" y1="63.5" x2="35.56" y2="60.96" width="0.1524" layer="91"/>
-<pinref part="SHIFT1" gate="G$1" pin="-3STATE"/>
-<wire x1="17.78" y1="50.8" x2="15.24" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="15.24" y1="50.8" x2="15.24" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="15.24" y1="68.58" x2="40.64" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="68.58" x2="40.64" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="60.96" x2="35.56" y2="60.96" width="0.1524" layer="91"/>
-<junction x="35.56" y="60.96"/>
-</segment>
-<segment>
 <pinref part="PWR_SHIFT1" gate="A" pin="1"/>
 <wire x1="71.12" y1="22.86" x2="63.5" y2="22.86" width="0.1524" layer="91"/>
 <label x="66.04" y="25.4" size="1.778" layer="95" rot="R180"/>
@@ -4225,6 +4213,10 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <pinref part="SHIFT1" gate="G$1" pin="VL"/>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
 <wire x1="30.48" y1="63.5" x2="30.48" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="SHIFT1" gate="G$1" pin="-3STATE"/>
+<wire x1="17.78" y1="50.8" x2="17.78" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="60.96" x2="30.48" y2="60.96" width="0.1524" layer="91"/>
+<junction x="30.48" y="60.96"/>
 </segment>
 <segment>
 <pinref part="PWR_SHIFT1" gate="A" pin="3"/>
@@ -4402,6 +4394,10 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <wire x1="124.46" y1="68.58" x2="124.46" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="124.46" y1="60.96" x2="127" y2="60.96" width="0.1524" layer="91"/>
 <junction x="127" y="60.96"/>
+<pinref part="SHIFT2" gate="G$1" pin="-3STATE"/>
+<wire x1="114.3" y1="50.8" x2="114.3" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="60.96" x2="124.46" y2="60.96" width="0.1524" layer="91"/>
+<junction x="124.46" y="60.96"/>
 </segment>
 <segment>
 <pinref part="C3" gate="G$1" pin="1"/>
@@ -4421,22 +4417,6 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </net>
 <net name="VCC_SHIFT2" class="0">
 <segment>
-<pinref part="SHIFT2" gate="G$1" pin="VCC"/>
-<pinref part="P+2" gate="1" pin="+5V"/>
-<wire x1="132.08" y1="63.5" x2="132.08" y2="60.96" width="0.1524" layer="91"/>
-<pinref part="PWR_SHIFT2" gate="A" pin="1"/>
-<wire x1="167.64" y1="66.04" x2="160.02" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="160.02" y1="66.04" x2="137.16" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="137.16" y1="66.04" x2="137.16" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="137.16" y1="60.96" x2="132.08" y2="60.96" width="0.1524" layer="91"/>
-<junction x="132.08" y="60.96"/>
-<pinref part="SHIFT2" gate="G$1" pin="-3STATE"/>
-<wire x1="114.3" y1="50.8" x2="114.3" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="73.66" x2="137.16" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="137.16" y1="73.66" x2="137.16" y2="66.04" width="0.1524" layer="91"/>
-<junction x="137.16" y="66.04"/>
-</segment>
-<segment>
 <pinref part="C4" gate="G$1" pin="1"/>
 <wire x1="137.16" y1="99.06" x2="137.16" y2="104.14" width="0.1524" layer="91"/>
 <label x="134.62" y="101.6" size="1.778" layer="95" rot="R90"/>
@@ -4450,6 +4430,17 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <pinref part="SJ5" gate="1" pin="1"/>
 <wire x1="180.34" y1="106.68" x2="172.72" y2="106.68" width="0.1524" layer="91"/>
 <label x="160.02" y="106.68" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="SHIFT2" gate="G$1" pin="VCC"/>
+<pinref part="P+2" gate="1" pin="+5V"/>
+<wire x1="132.08" y1="63.5" x2="132.08" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="PWR_SHIFT2" gate="A" pin="1"/>
+<wire x1="167.64" y1="66.04" x2="160.02" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="66.04" x2="137.16" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="66.04" x2="137.16" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="60.96" x2="132.08" y2="60.96" width="0.1524" layer="91"/>
+<junction x="132.08" y="60.96"/>
 </segment>
 </net>
 <net name="IOVCC4_SHIFT3" class="0">
@@ -4536,6 +4527,10 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <wire x1="220.98" y1="63.5" x2="220.98" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="220.98" y1="55.88" x2="223.52" y2="55.88" width="0.1524" layer="91"/>
 <junction x="223.52" y="55.88"/>
+<pinref part="SHIFT3" gate="G$1" pin="-3STATE"/>
+<wire x1="210.82" y1="45.72" x2="210.82" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="210.82" y1="55.88" x2="220.98" y2="55.88" width="0.1524" layer="91"/>
+<junction x="220.98" y="55.88"/>
 </segment>
 <segment>
 <pinref part="C5" gate="G$1" pin="1"/>
@@ -4564,11 +4559,6 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <wire x1="233.68" y1="60.96" x2="233.68" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="233.68" y1="55.88" x2="228.6" y2="55.88" width="0.1524" layer="91"/>
 <junction x="228.6" y="55.88"/>
-<pinref part="SHIFT3" gate="G$1" pin="-3STATE"/>
-<wire x1="210.82" y1="45.72" x2="210.82" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="210.82" y1="68.58" x2="233.68" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="233.68" y1="68.58" x2="233.68" y2="60.96" width="0.1524" layer="91"/>
-<junction x="233.68" y="60.96"/>
 </segment>
 <segment>
 <pinref part="C6" gate="G$1" pin="1"/>
@@ -4670,6 +4660,10 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <wire x1="320.04" y1="68.58" x2="320.04" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="320.04" y1="60.96" x2="322.58" y2="60.96" width="0.1524" layer="91"/>
 <junction x="322.58" y="60.96"/>
+<pinref part="SHIFT4" gate="G$1" pin="-3STATE"/>
+<wire x1="309.88" y1="50.8" x2="309.88" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="309.88" y1="60.96" x2="320.04" y2="60.96" width="0.1524" layer="91"/>
+<junction x="320.04" y="60.96"/>
 </segment>
 <segment>
 <pinref part="C7" gate="G$1" pin="1"/>
@@ -4684,6 +4678,16 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </net>
 <net name="VCC_SHIFT4" class="0">
 <segment>
+<pinref part="C8" gate="G$1" pin="1"/>
+<wire x1="335.28" y1="101.6" x2="335.28" y2="109.22" width="0.1524" layer="91"/>
+<label x="332.74" y="106.68" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="SJ4" gate="1" pin="2"/>
+<wire x1="292.1" y1="106.68" x2="299.72" y2="106.68" width="0.1524" layer="91"/>
+<label x="297.18" y="106.68" size="1.778" layer="95"/>
+</segment>
+<segment>
 <pinref part="SHIFT4" gate="G$1" pin="VCC"/>
 <pinref part="P+4" gate="1" pin="+5V"/>
 <wire x1="327.66" y1="63.5" x2="327.66" y2="60.96" width="0.1524" layer="91"/>
@@ -4693,21 +4697,13 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <wire x1="332.74" y1="66.04" x2="332.74" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="332.74" y1="60.96" x2="327.66" y2="60.96" width="0.1524" layer="91"/>
 <junction x="327.66" y="60.96"/>
-<pinref part="SHIFT4" gate="G$1" pin="-3STATE"/>
-<wire x1="309.88" y1="50.8" x2="309.88" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="309.88" y1="73.66" x2="332.74" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="332.74" y1="73.66" x2="332.74" y2="66.04" width="0.1524" layer="91"/>
-<junction x="332.74" y="66.04"/>
 </segment>
+</net>
+<net name="+5V" class="0">
 <segment>
-<pinref part="C8" gate="G$1" pin="1"/>
-<wire x1="335.28" y1="101.6" x2="335.28" y2="109.22" width="0.1524" layer="91"/>
-<label x="332.74" y="106.68" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<pinref part="SJ4" gate="1" pin="2"/>
-<wire x1="292.1" y1="106.68" x2="299.72" y2="106.68" width="0.1524" layer="91"/>
-<label x="297.18" y="106.68" size="1.778" layer="95"/>
+<pinref part="SHIFT1" gate="G$1" pin="VCC"/>
+<pinref part="P+1" gate="1" pin="+5V"/>
+<wire x1="35.56" y1="63.5" x2="35.56" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
