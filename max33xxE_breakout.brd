@@ -414,18 +414,46 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="SHIFT1" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="6.35" y="7.62"/>
-<element name="PWR_SHIFT1" library="pinhead" package="1X03" value="" x="1.27" y="7.62" rot="R270"/>
-<element name="IOVCC_SHIFT1" library="pinhead" package="1X04" value="" x="5.08" y="13.97"/>
-<element name="IOVL_SHIFT1" library="pinhead" package="1X04" value="" x="5.08" y="1.27"/>
-<element name="SHIFT2" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="20.32" y="7.62"/>
-<element name="PWR_SHIFT2" library="pinhead" package="1X03" value="" x="15.24" y="7.62" rot="R270"/>
-<element name="IOVCC_SHIFT2" library="pinhead" package="1X04" value="" x="19.05" y="13.97"/>
-<element name="IOVL_SHIFT2" library="pinhead" package="1X04" value="" x="19.05" y="1.27"/>
-<element name="SHIFT3" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="34.29" y="7.62"/>
-<element name="PWR_SHIFT3" library="pinhead" package="1X03" value="" x="29.21" y="7.62" rot="R270"/>
-<element name="IOVCC_SHIFT3" library="pinhead" package="1X04" value="" x="33.02" y="13.97"/>
-<element name="IOVL_SHIFT3" library="pinhead" package="1X04" value="" x="33.02" y="1.27"/>
+<element name="SHIFT1" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="6.35" y="7.62" smashed="yes"/>
+<element name="PWR_SHIFT1" library="pinhead" package="1X03" value="" x="1.27" y="7.62" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-1.905" y="11.43" size="1.27" layer="27" rot="R270"/>
+</element>
+<element name="IOVCC_SHIFT1" library="pinhead" package="1X04" value="" x="5.08" y="13.97" smashed="yes">
+<attribute name="VALUE" x="0" y="10.795" size="1.27" layer="27"/>
+</element>
+<element name="IOVL_SHIFT1" library="pinhead" package="1X04" value="" x="5.08" y="1.27" smashed="yes">
+<attribute name="VALUE" x="0" y="-1.905" size="1.27" layer="27"/>
+</element>
+<element name="SHIFT2" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="19.05" y="7.62" smashed="yes"/>
+<element name="PWR_SHIFT2" library="pinhead" package="1X03" value="" x="13.97" y="7.62" smashed="yes" rot="R270">
+<attribute name="VALUE" x="10.795" y="11.43" size="1.27" layer="27" rot="R270"/>
+</element>
+<element name="IOVCC_SHIFT2" library="pinhead" package="1X04" value="" x="17.78" y="13.97" smashed="yes">
+<attribute name="VALUE" x="12.7" y="10.795" size="1.27" layer="27"/>
+</element>
+<element name="IOVL_SHIFT2" library="pinhead" package="1X04" value="" x="17.78" y="1.27" smashed="yes">
+<attribute name="VALUE" x="12.7" y="-1.905" size="1.27" layer="27"/>
+</element>
+<element name="SHIFT3" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="31.75" y="7.62" smashed="yes"/>
+<element name="PWR_SHIFT3" library="pinhead" package="1X03" value="" x="26.67" y="7.62" smashed="yes" rot="R270">
+<attribute name="VALUE" x="23.495" y="11.43" size="1.27" layer="27" rot="R270"/>
+</element>
+<element name="IOVCC_SHIFT3" library="pinhead" package="1X04" value="" x="30.48" y="13.97" smashed="yes">
+<attribute name="VALUE" x="25.4" y="10.795" size="1.27" layer="27"/>
+</element>
+<element name="IOVL_SHIFT3" library="pinhead" package="1X04" value="" x="30.48" y="1.27" smashed="yes">
+<attribute name="VALUE" x="25.4" y="-1.905" size="1.27" layer="27"/>
+</element>
+<element name="SHIFT4" library="max33xxE_lvl_shifters" package="TSSOP14" value="MAX3378E" x="44.45" y="7.62" smashed="yes"/>
+<element name="PWR_SHIFT4" library="pinhead" package="1X03" value="" x="39.37" y="7.62" smashed="yes" rot="R270">
+<attribute name="VALUE" x="36.195" y="11.43" size="1.27" layer="27" rot="R270"/>
+</element>
+<element name="IOVCC_SHIFT4" library="pinhead" package="1X04" value="" x="43.18" y="13.97" smashed="yes">
+<attribute name="VALUE" x="38.1" y="10.795" size="1.27" layer="27"/>
+</element>
+<element name="IOVL_SHIFT4" library="pinhead" package="1X04" value="" x="43.18" y="1.27" smashed="yes">
+<attribute name="VALUE" x="38.1" y="-1.905" size="1.27" layer="27"/>
+</element>
 </elements>
 <signals>
 <signal name="GND">
@@ -435,11 +463,15 @@ design rules under a new name.</description>
 <contactref element="PWR_SHIFT2" pad="2"/>
 <contactref element="SHIFT3" pad="7"/>
 <contactref element="PWR_SHIFT3" pad="2"/>
-<wire x1="29.21" y1="7.62" x2="36.24" y2="4.7022" width="0" layer="19" extent="1-1"/>
-<wire x1="22.27" y1="4.7022" x2="29.21" y2="7.62" width="0" layer="19" extent="1-1"/>
-<wire x1="15.24" y1="7.62" x2="22.27" y2="4.7022" width="0" layer="19" extent="1-1"/>
-<wire x1="8.3" y1="4.7022" x2="15.24" y2="7.62" width="0" layer="19" extent="1-1"/>
+<contactref element="SHIFT4" pad="7"/>
+<contactref element="PWR_SHIFT4" pad="2"/>
+<wire x1="26.67" y1="7.62" x2="33.7" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="21" y1="4.7022" x2="26.67" y2="7.62" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="7.62" x2="21" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="8.3" y1="4.7022" x2="13.97" y2="7.62" width="0" layer="19" extent="1-1"/>
 <wire x1="1.27" y1="7.62" x2="8.3" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="46.4" y1="4.7022" x2="8.3" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="39.37" y1="7.62" x2="46.4" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC_SHIFT1">
 <contactref element="SHIFT1" pad="14"/>
@@ -494,102 +526,152 @@ design rules under a new name.</description>
 <signal name="IOVCC4_SHIFT2">
 <contactref element="SHIFT2" pad="10"/>
 <contactref element="IOVCC_SHIFT2" pad="4"/>
-<wire x1="20.97" y1="10.5378" x2="22.86" y2="13.97" width="0" layer="19" extent="1-1"/>
+<wire x1="19.7" y1="10.5378" x2="21.59" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC3_SHIFT2">
 <contactref element="SHIFT2" pad="11"/>
 <contactref element="IOVCC_SHIFT2" pad="3"/>
-<wire x1="20.32" y1="10.5378" x2="20.32" y2="13.97" width="0" layer="19" extent="1-1"/>
+<wire x1="19.05" y1="10.5378" x2="19.05" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC2_SHIFT2">
 <contactref element="SHIFT2" pad="12"/>
 <contactref element="IOVCC_SHIFT2" pad="2"/>
-<wire x1="19.67" y1="10.5378" x2="17.78" y2="13.97" width="0" layer="19" extent="1-1"/>
+<wire x1="18.4" y1="10.5378" x2="16.51" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC1_SHIFT2">
 <contactref element="SHIFT2" pad="13"/>
 <contactref element="IOVCC_SHIFT2" pad="1"/>
-<wire x1="15.24" y1="13.97" x2="19.02" y2="10.5378" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="13.97" x2="17.75" y2="10.5378" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL2_SHIFT2">
 <contactref element="IOVL_SHIFT2" pad="2"/>
 <contactref element="SHIFT2" pad="3"/>
-<wire x1="17.78" y1="1.27" x2="19.67" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="16.51" y1="1.27" x2="18.4" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL1_SHIFT2">
 <contactref element="IOVL_SHIFT2" pad="1"/>
 <contactref element="SHIFT2" pad="2"/>
-<wire x1="15.24" y1="1.27" x2="19.02" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="1.27" x2="17.75" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL3_SHIFT2">
 <contactref element="IOVL_SHIFT2" pad="3"/>
 <contactref element="SHIFT2" pad="4"/>
-<wire x1="20.32" y1="1.27" x2="20.32" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="19.05" y1="1.27" x2="19.05" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL4_SHIFT2">
 <contactref element="IOVL_SHIFT2" pad="4"/>
 <contactref element="SHIFT2" pad="5"/>
-<wire x1="20.97" y1="4.7022" x2="22.86" y2="1.27" width="0" layer="19" extent="1-1"/>
+<wire x1="19.7" y1="4.7022" x2="21.59" y2="1.27" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VL_SHIFT2">
 <contactref element="SHIFT2" pad="1"/>
 <contactref element="PWR_SHIFT2" pad="3"/>
-<wire x1="15.24" y1="5.08" x2="18.37" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="5.08" x2="17.1" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC_SHIFT2">
 <contactref element="SHIFT2" pad="14"/>
 <contactref element="PWR_SHIFT2" pad="1"/>
-<wire x1="15.24" y1="10.16" x2="18.37" y2="10.5378" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="10.16" x2="17.1" y2="10.5378" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC4_SHIFT3">
 <contactref element="SHIFT3" pad="10"/>
 <contactref element="IOVCC_SHIFT3" pad="4"/>
-<wire x1="34.94" y1="10.5378" x2="36.83" y2="13.97" width="0" layer="19" extent="1-1"/>
+<wire x1="32.4" y1="10.5378" x2="34.29" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC3_SHIFT3">
 <contactref element="SHIFT3" pad="11"/>
 <contactref element="IOVCC_SHIFT3" pad="3"/>
-<wire x1="34.29" y1="10.5378" x2="34.29" y2="13.97" width="0" layer="19" extent="1-1"/>
+<wire x1="31.75" y1="10.5378" x2="31.75" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC2_SHIFT3">
 <contactref element="SHIFT3" pad="12"/>
 <contactref element="IOVCC_SHIFT3" pad="2"/>
-<wire x1="33.64" y1="10.5378" x2="31.75" y2="13.97" width="0" layer="19" extent="1-1"/>
+<wire x1="31.1" y1="10.5378" x2="29.21" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVCC1_SHIFT3">
 <contactref element="SHIFT3" pad="13"/>
 <contactref element="IOVCC_SHIFT3" pad="1"/>
-<wire x1="29.21" y1="13.97" x2="32.99" y2="10.5378" width="0" layer="19" extent="1-1"/>
+<wire x1="26.67" y1="13.97" x2="30.45" y2="10.5378" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL2_SHIFT3">
 <contactref element="IOVL_SHIFT3" pad="2"/>
 <contactref element="SHIFT3" pad="3"/>
-<wire x1="31.75" y1="1.27" x2="33.64" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="29.21" y1="1.27" x2="31.1" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL1_SHIFT3">
 <contactref element="IOVL_SHIFT3" pad="1"/>
 <contactref element="SHIFT3" pad="2"/>
-<wire x1="29.21" y1="1.27" x2="32.99" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="26.67" y1="1.27" x2="30.45" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL3_SHIFT3">
 <contactref element="IOVL_SHIFT3" pad="3"/>
 <contactref element="SHIFT3" pad="4"/>
-<wire x1="34.29" y1="1.27" x2="34.29" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="31.75" y1="1.27" x2="31.75" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="IOVL4_SHIFT3">
 <contactref element="IOVL_SHIFT3" pad="4"/>
 <contactref element="SHIFT3" pad="5"/>
-<wire x1="34.94" y1="4.7022" x2="36.83" y2="1.27" width="0" layer="19" extent="1-1"/>
+<wire x1="32.4" y1="4.7022" x2="34.29" y2="1.27" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VL_SHIFT3">
 <contactref element="SHIFT3" pad="1"/>
 <contactref element="PWR_SHIFT3" pad="3"/>
-<wire x1="29.21" y1="5.08" x2="32.34" y2="4.7022" width="0" layer="19" extent="1-1"/>
+<wire x1="26.67" y1="5.08" x2="29.8" y2="4.7022" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC_SHIFT3">
 <contactref element="SHIFT3" pad="14"/>
 <contactref element="PWR_SHIFT3" pad="1"/>
-<wire x1="29.21" y1="10.16" x2="32.34" y2="10.5378" width="0" layer="19" extent="1-1"/>
+<wire x1="26.67" y1="10.16" x2="29.8" y2="10.5378" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVCC4_SHIFT4">
+<contactref element="SHIFT4" pad="10"/>
+<contactref element="IOVCC_SHIFT4" pad="4"/>
+<wire x1="45.1" y1="10.5378" x2="46.99" y2="13.97" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVCC3_SHIFT4">
+<contactref element="SHIFT4" pad="11"/>
+<contactref element="IOVCC_SHIFT4" pad="3"/>
+<wire x1="44.45" y1="10.5378" x2="44.45" y2="13.97" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVCC2_SHIFT4">
+<contactref element="SHIFT4" pad="12"/>
+<contactref element="IOVCC_SHIFT4" pad="2"/>
+<wire x1="43.8" y1="10.5378" x2="41.91" y2="13.97" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVCC1_SHIFT4">
+<contactref element="SHIFT4" pad="13"/>
+<contactref element="IOVCC_SHIFT4" pad="1"/>
+<wire x1="43.15" y1="10.5378" x2="39.37" y2="13.97" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVL2_SHIFT4">
+<contactref element="IOVL_SHIFT4" pad="2"/>
+<contactref element="SHIFT4" pad="3"/>
+<wire x1="43.8" y1="4.7022" x2="41.91" y2="1.27" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVL1_SHIFT4">
+<contactref element="IOVL_SHIFT4" pad="1"/>
+<contactref element="SHIFT4" pad="2"/>
+<wire x1="43.15" y1="4.7022" x2="39.37" y2="1.27" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVL3_SHIFT4">
+<contactref element="IOVL_SHIFT4" pad="3"/>
+<contactref element="SHIFT4" pad="4"/>
+<wire x1="44.45" y1="4.7022" x2="44.45" y2="1.27" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="IOVL4_SHIFT4">
+<contactref element="IOVL_SHIFT4" pad="4"/>
+<contactref element="SHIFT4" pad="5"/>
+<wire x1="45.1" y1="4.7022" x2="46.99" y2="1.27" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="VL_SHIFT4">
+<contactref element="SHIFT4" pad="1"/>
+<contactref element="PWR_SHIFT4" pad="3"/>
+<wire x1="42.5" y1="4.7022" x2="39.37" y2="5.08" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="VCC_SHIFT4">
+<contactref element="SHIFT4" pad="14"/>
+<contactref element="PWR_SHIFT4" pad="1"/>
+<wire x1="42.5" y1="10.5378" x2="39.37" y2="10.16" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>
