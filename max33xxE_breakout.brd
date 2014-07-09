@@ -121,6 +121,12 @@
 <wire x1="48.26" y1="0" x2="48.26" y2="15.24" width="0" layer="20"/>
 <wire x1="48.26" y1="15.24" x2="0" y2="15.24" width="0" layer="20"/>
 <wire x1="0" y1="15.24" x2="0" y2="0" width="0" layer="20"/>
+<text x="11.1125" y="14.9225" size="1.016" layer="25" font="vector" rot="R270">VCC</text>
+<text x="23.8125" y="14.9225" size="1.016" layer="25" font="vector" rot="R270">VCC</text>
+<text x="36.5125" y="14.9225" size="1.016" layer="25" font="vector" rot="R270">VCC</text>
+<text x="11.1125" y="2.2225" size="1.016" layer="25" font="vector" rot="R270">VL</text>
+<text x="23.8125" y="2.2225" size="1.016" layer="25" font="vector" rot="R270">VL</text>
+<text x="36.5125" y="2.2225" size="1.016" layer="25" font="vector" rot="R270">VL</text>
 </plain>
 <libraries>
 <library name="max33xxE_lvl_shifters">
