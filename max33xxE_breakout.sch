@@ -521,7 +521,7 @@ MAX3377E has 230kbps max speed</description>
 <instance part="GND1" gate="1" x="33.02" y="22.86"/>
 <instance part="P+1" gate="1" x="35.56" y="66.04"/>
 <instance part="+3V1" gate="G$1" x="30.48" y="66.04"/>
-<instance part="PWR_SHIFT1" gate="A" x="33.02" y="5.08" rot="R270"/>
+<instance part="PWR_SHIFT1" gate="A" x="73.66" y="20.32"/>
 <instance part="IOVCC_SHIFT1" gate="A" x="73.66" y="40.64"/>
 <instance part="IOVL_SHIFT1" gate="A" x="73.66" y="60.96"/>
 </instances>
@@ -536,11 +536,11 @@ MAX3377E has 230kbps max speed</description>
 </segment>
 <segment>
 <pinref part="PWR_SHIFT1" gate="A" pin="2"/>
-<wire x1="33.02" y1="7.62" x2="33.02" y2="15.24" width="0.1524" layer="91"/>
-<label x="33.02" y="12.7" size="1.778" layer="95" rot="R90"/>
+<wire x1="71.12" y1="20.32" x2="63.5" y2="20.32" width="0.1524" layer="91"/>
+<label x="66.04" y="20.32" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="VCC" class="0">
+<net name="VCC_SHIFT1" class="0">
 <segment>
 <pinref part="SHIFT1" gate="G$1" pin="VCC"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
@@ -548,11 +548,11 @@ MAX3377E has 230kbps max speed</description>
 </segment>
 <segment>
 <pinref part="PWR_SHIFT1" gate="A" pin="1"/>
-<wire x1="35.56" y1="7.62" x2="35.56" y2="15.24" width="0.1524" layer="91"/>
-<label x="38.1" y="12.7" size="1.778" layer="95" rot="R90"/>
+<wire x1="71.12" y1="22.86" x2="63.5" y2="22.86" width="0.1524" layer="91"/>
+<label x="66.04" y="25.4" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="VL" class="0">
+<net name="VL_SHIFT1" class="0">
 <segment>
 <pinref part="SHIFT1" gate="G$1" pin="VL"/>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
@@ -560,8 +560,8 @@ MAX3377E has 230kbps max speed</description>
 </segment>
 <segment>
 <pinref part="PWR_SHIFT1" gate="A" pin="3"/>
-<wire x1="30.48" y1="7.62" x2="30.48" y2="15.24" width="0.1524" layer="91"/>
-<label x="30.48" y="12.7" size="1.778" layer="95" rot="R90"/>
+<wire x1="71.12" y1="17.78" x2="63.5" y2="17.78" width="0.1524" layer="91"/>
+<label x="66.04" y="17.78" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="IOVL2_SHIFT1" class="0">
