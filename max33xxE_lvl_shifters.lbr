@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -139,8 +139,58 @@ Think Shrink Small Outline Package 14 pins</description>
 </package>
 </packages>
 <symbols>
+<symbol name="4BITBIDIR">
+<description>4-bit bidirectional level shifter</description>
+<wire x1="-12.7" y1="15.24" x2="12.7" y2="15.24" width="0.254" layer="94"/>
+<wire x1="12.7" y1="15.24" x2="12.7" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-12.7" x2="-12.7" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-12.7" x2="-12.7" y2="15.24" width="0.254" layer="94"/>
+<text x="-12.7" y="17.78" size="1.27" layer="95">&gt;NAME</text>
+<text x="-12.7" y="-15.24" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="VL" x="-2.54" y="17.78" length="short" rot="R270"/>
+<pin name="IOVL1" x="-15.24" y="2.54" length="short"/>
+<pin name="IOVL2" x="-15.24" y="0" length="short"/>
+<pin name="IOVL3" x="-15.24" y="-2.54" length="short"/>
+<pin name="IOVL4" x="-15.24" y="-5.08" length="short"/>
+<pin name="GND" x="0" y="-15.24" length="short" rot="R90"/>
+<pin name="VCC" x="2.54" y="17.78" length="short" rot="R270"/>
+<pin name="IOVCC1" x="15.24" y="2.54" length="short" rot="R180"/>
+<pin name="IOVCC2" x="15.24" y="0" length="short" rot="R180"/>
+<pin name="IOVCC3" x="15.24" y="-2.54" length="short" rot="R180"/>
+<pin name="IOVCC4" x="15.24" y="-5.08" length="short" rot="R180"/>
+<pin name="-3STATE" x="-15.24" y="7.62" length="short"/>
+</symbol>
 </symbols>
 <devicesets>
+<deviceset name="MAX3378E">
+<description>MAX3378E Bi-directional 4-bit low-voltage level translator
+
+8Mbps max speed.</description>
+<gates>
+<gate name="G$1" symbol="4BITBIDIR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="TSSOP14">
+<connects>
+<connect gate="G$1" pin="-3STATE" pad="8"/>
+<connect gate="G$1" pin="GND" pad="7"/>
+<connect gate="G$1" pin="IOVCC1" pad="13"/>
+<connect gate="G$1" pin="IOVCC2" pad="12"/>
+<connect gate="G$1" pin="IOVCC3" pad="11"/>
+<connect gate="G$1" pin="IOVCC4" pad="10"/>
+<connect gate="G$1" pin="IOVL1" pad="2"/>
+<connect gate="G$1" pin="IOVL2" pad="3"/>
+<connect gate="G$1" pin="IOVL3" pad="4"/>
+<connect gate="G$1" pin="IOVL4" pad="5"/>
+<connect gate="G$1" pin="VCC" pad="14"/>
+<connect gate="G$1" pin="VL" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 </devicesets>
 </library>
 </drawing>
