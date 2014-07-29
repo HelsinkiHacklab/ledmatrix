@@ -174,7 +174,7 @@ It seems 3.8 kernel fixes this issue, at least I checked it still has the DMA_MI
 So let's compile one, if your linux is Ubuntu you can save some downloading by `apt-get install gcc-arm-linux-gnueabihf`.
 
   1. Get <https://github.com/RobertCNelson/stable-kernel>, you might want to check out the README.
-  2. `git checkout origin/v3.8.x -b tmp`
+  2. `git checkout origin/v3.9.x -b tmp`
   3. `./build_kernel.sh` (this will take a long while unless you have a monster of a machine)
   4. Halt the board and put the card back in the reader still connected to the Linux machine
   5. Edit `system.sh` and set `MMC=/dev/sdb` (or whatever the card device for you is).
