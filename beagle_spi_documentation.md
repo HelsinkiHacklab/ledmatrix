@@ -169,12 +169,12 @@ In the default 3.7 kernel that comes with the netinstall there is a bug with DMA
 159 bytes in length will hang the SPI device (and the program using it) requiring a reset of the board. This triggers at 160 bytes since
 the kernel driver for the SPI device happens to define that as the limit for switching from PIO to DMA (and the DMA part bugs out).
 
-It seems 3.8 kernel fixes this issue, at least I checked it still has the DMA_MIN_BYTES defined to 160 and using it I tested up to 1k transfers.
+It seems 3.9 kernel fixes this issue, at least I checked it still has the DMA_MIN_BYTES defined to 160 and using it I tested up to 1k transfers.
 
 So let's compile one, if your linux is Ubuntu you can save some downloading by `apt-get install gcc-arm-linux-gnueabihf`.
 
   1. Get <https://github.com/RobertCNelson/stable-kernel>, you might want to check out the README.
-  2. `git checkout origin/v3.8.x -b tmp`
+  2. `git checkout origin/v3.9.x -b tmp`
   3. `./build_kernel.sh` (this will take a long while unless you have a monster of a machine)
   4. Halt the board and put the card back in the reader still connected to the Linux machine
   5. Edit `system.sh` and set `MMC=/dev/sdb` (or whatever the card device for you is).

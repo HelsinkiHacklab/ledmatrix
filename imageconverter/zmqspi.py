@@ -28,6 +28,18 @@ class handler:
             #c.rgbim.show()
             time.sleep(float(c.im.info['duration'])/1000)
 
+    def loop(self, img, count=False):
+        c = imageconverter(img)
+        while True:
+            self.send_frame(c)
+            if c.im.info.has_key('duration'):
+                time.sleep(float(c.im.info['duration'])/1000)
+            while c.seek():
+                self.send_frame(c)
+                time.sleep(float(c.im.info['duration'])/1000)
+            c.seek(0)
+
+
 if __name__ == '__main__':
     from imageconverter import imageconverter
     if len(sys.argv) < 3:
@@ -35,4 +47,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
     h = handler(sys.argv[2])
-    h.send(sys.argv[1])
+    #h.send(sys.argv[1])
+    h.loop(sys.argv[1])
+
