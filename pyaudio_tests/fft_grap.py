@@ -64,9 +64,31 @@ class SimpleBeatDetection:
 
         return beat
 
+class ZMQThread(QtCore.QThread):
+    def __init__(self, view):
+        QtCore.QThread.__init__(self)
+        self.view = view
+        self.connect(self.view, QtCore.SIGNAL('update_matrix()'), self.update_matrix)
 
+    def run(self):
+        while(True):
+            time.sleep(0) # Yield
+        return
 
-class MyWidget(QtGui.QWidget):
+    def update_matrix(self):
+        # Switch the lines that need switching
+        for i in range(len(self.view.imagearray)):
+            if ((i % 2) == 0):
+                self.view.imagearray_switched[i] = self.view.imagearray[i][::-1]
+            else:
+                self.view.imagearray_switched[i] = self.view.imagearray[i]
+        # and output
+        self.view.zmq_socket.send(self.view.imagearray_switched.flatten())
+        # We have to get the reply even if we do not care about it
+        self.view.zmq_socket.recv()
+        
+
+class PreviewWindow(QtGui.QWidget):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         
@@ -96,6 +118,10 @@ class MyWidget(QtGui.QWidget):
         self.analyze_timer = QtCore.QTimer()
         self.analyze_timer.timeout.connect(self.analyze_audio)
         self.analyze_timer.start(0)
+
+        # Kick up a thread to handle the ZQM coms
+        self.zmqthread = ZMQThread(self)
+        self.zmqthread.start()
 
         # Update the matrix every X ms
         self.update_matrix_timer = QtCore.QTimer()
@@ -222,18 +248,7 @@ class MyWidget(QtGui.QWidget):
 
 
     def update_matrix(self):
-        if not self.zmq_socket:
-            return
-        # Switch the lines that need switching
-        for i in range(len(self.imagearray)):
-            if ((i % 2) == 0):
-                self.imagearray_switched[i] = self.imagearray[i][::-1]
-            else:
-                self.imagearray_switched[i] = self.imagearray[i]
-        # and output
-        self.zmq_socket.send(self.imagearray_switched.flatten())
-        # We have to get the reply even if we do not care about it
-        self.zmq_socket.recv()
+        self.emit(QtCore.SIGNAL('update_matrix()'))
 
     def update_image(self):
         self.PilImage = Image.fromarray(self.imagearray)
@@ -253,7 +268,7 @@ class MyWidget(QtGui.QWidget):
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
-    myWidget = MyWidget()
+    myWidget = PreviewWindow()
     p = pyaudio.PyAudio()
     myWidget.inStream = p.open(format=pyaudio.paInt16, channels=1, rate=sampleRate, input=True, frames_per_buffer=bufferSize)
     if len(sys.argv) > 1:
