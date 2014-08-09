@@ -60,6 +60,8 @@ class handler:
         self.send_socket.send(self.bytestream)
         # We must read the reply even if we do not expect to use it
         dummy = self.send_socket.recv()
+        # and in case the client is sync senc reply
+        self.recv_socket.send(client_id)
 
     def run(self):
         ioloop.IOLoop.instance().start()
@@ -68,7 +70,7 @@ class handler:
 
 if __name__ == '__main__':
     from imageconverter import imageconverter
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         print "usage ./zmq_framebuffer.py tcp://whatever:6969"
         sys.exit(1)
 
