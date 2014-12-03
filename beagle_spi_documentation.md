@@ -228,7 +228,7 @@ For GPIO use of pin you want it to be in MODE4, this can be set with
 
     echo 0x004 >/sys/kernel/debug/omap_mux/muxname
 
-A simple shell script I put on the device as `/urs/local/bin/gpio_output`
+A simple shell script I put on the device as `/usr/local/bin/gpio_output`
 
     #!/bin/bash 
     pinctl="/sys/class/gpio/gpio"$1
