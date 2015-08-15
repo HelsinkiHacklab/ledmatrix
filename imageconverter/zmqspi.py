@@ -43,10 +43,12 @@ class handler:
 if __name__ == '__main__':
     from imageconverter import imageconverter
     if len(sys.argv) < 3:
-        print "usage ./zmqspi.py imagefile tcp://whatever:6969"
+        print "usage ./zmqspi.py tcp://whatever:6969 imagefile [imagefile 2 ...]"
         sys.exit(1)
 
-    h = handler(sys.argv[2])
-    #h.send(sys.argv[1])
-    h.loop(sys.argv[1])
+    h = handler(sys.argv[1])
+    while True:
+        for i in range(2, len(sys.argv)):
+             for j in range(0, 4):
+                 h.send(sys.argv[i])
 
