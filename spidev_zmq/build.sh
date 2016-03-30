@@ -22,7 +22,7 @@ if [ /$1/ = /all/ ]; then
 elif [ /$1/ = /clean/ ]; then
     echo "Cleaning C examples directory..."
     rm -f *.o *.lst core
-    for MAIN in `egrep -l "main \(" *.c`; do
+    for MAIN in `egrep -l "main\s*\(" *.c`; do
         rm -f `basename $MAIN .c`
     done
 elif [ -f $1.c ]; then
