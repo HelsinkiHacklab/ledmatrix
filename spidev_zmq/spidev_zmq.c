@@ -31,6 +31,10 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
+#include <sys/time.h>
+struct timeval  tv1, tv2, tv3, tv4;
+
+
 //  Signal handling
 //
 //  Call s_catch_signals() in your application at startup, and then
@@ -342,7 +346,8 @@ int main(int argc, char *argv[])
             dummy_reply(zmq_responder);
             continue;
         }
-        
+        gettimeofday(&tv1, NULL);
+
         if (verbose)
         {
             printf("Allocating txarr (%d bytes)\n", size);
@@ -385,11 +390,23 @@ int main(int argc, char *argv[])
         {
             printf("About to send %d bytes over SPI\n", size);
         }
+
+        gettimeofday(&tv2, NULL);
+
         transfer_ret = spi_transfer(spidev_fd, txarr, rxarr, size);
         if (verbose)
         {
             printf("spi_transfer returned %d\n", transfer_ret);
         }
+
+        gettimeofday(&tv3, NULL);
+        if (verbose)
+        {
+            printf ("SPI time = %f seconds\n",
+                 (double) (tv3.tv_usec - tv2.tv_usec) / 1000000 +
+                 (double) (tv3.tv_sec - tv2.tv_sec));
+        }
+
         if (transfer_ret < 1)
         {
             // Error when transferring, send a dummy reply
@@ -425,6 +442,14 @@ int main(int argc, char *argv[])
         }
         free(txarr);
         free(rxarr);
+        gettimeofday(&tv4, NULL);
+
+        if (verbose)
+        {
+            printf ("Total time = %f seconds\n",
+                 (double) (tv4.tv_usec - tv1.tv_usec) / 1000000 +
+                 (double) (tv4.tv_sec - tv1.tv_sec));
+        }
 
     }
     if (verbose)
