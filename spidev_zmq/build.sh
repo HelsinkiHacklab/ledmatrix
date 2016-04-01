@@ -15,7 +15,7 @@ if pkg-config libzmq --exists; then
 fi
 if [ /$1/ = /all/ ]; then
     echo "Building C examples..."
-    for MAIN in `egrep -l "main \(" *.c`; do
+    for MAIN in `egrep -l "main\s*\(" *.c`; do
         echo "$MAIN"
         ./c -l $ZMQOPTS -q $MAIN
     done
